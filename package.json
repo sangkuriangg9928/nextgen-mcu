@@ -1,0 +1,11 @@
+{
+  "name": "nextgen-mobile-mcu",
+  "version": "1.0.0",
+  "description": "NextGen Mobile MCU - End-to-End Digital Medical Check Up",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}
