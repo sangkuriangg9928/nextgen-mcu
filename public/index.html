@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -47,14 +48,45 @@
       </section>
       <!-- MASTER DATA -->
       <section class="sec" id="p-master">
-        <div class="cd" style="margin-bottom:24px"><div class="cd-h"><h3>Upload Master Data Peserta</h3></div><div class="cd-b">
-          <div class="up" onclick="document.getElementById('exFile').click()"><i class="fas fa-cloud-upload-alt"></i><p>Klik untuk upload file CSV<br><small>Format: nama, nik, perusahaan, paket, dll</small></p><input type="file" id="exFile" accept=".csv" style="display:none" onchange="handleExcel(event)"></div>
-          <div style="margin-top:20px;text-align:center;display:flex;gap:12px;justify-content:center"><button class="btn btn-o btn-sm" onclick="dlTemplate()"><i class="fas fa-download"></i> Download Template</button><button class="btn btn-p btn-sm" onclick="showAddM()"><i class="fas fa-plus"></i> Tambah Manual</button></div>
+        <!-- Flow Visual -->
+        <div class="cd" style="margin-bottom:24px"><div class="cd-h"><h3><i class="fas fa-database" style="color:var(--p1);margin-right:8px"></i> Master Data Peserta</h3><span class="bg bg-p">Step 1</span></div><div class="cd-b">
+          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-file-excel" style="font-size:28px;color:#217346;margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Upload Excel</div><div style="font-size:10px;color:var(--text-muted)">.xlsx / .csv</div></div>
+            <i class="fas fa-arrow-right" style="color:var(--p1);font-size:20px"></i>
+            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-cogs" style="font-size:28px;color:var(--p1);margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Proses Data</div><div style="font-size:10px;color:var(--text-muted)">Validasi & Parsing</div></div>
+            <i class="fas fa-arrow-right" style="color:var(--p1);font-size:20px"></i>
+            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-list-alt" style="font-size:28px;color:#7C4DFF;margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Database</div><div style="font-size:10px;color:var(--text-muted)">Tersimpan Otomatis</div></div>
+          </div>
+          <div class="up" id="dropZone" onclick="document.getElementById('exFile').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Drag & drop file Excel / CSV ke sini<br><small>atau klik untuk pilih file (.xlsx, .xls, .csv)</small></p>
+            <input type="file" id="exFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)">
+          </div>
+          <!-- Preview Area -->
+          <div id="previewArea" style="display:none;margin-top:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <h4 style="font-size:14px;color:var(--text)"><i class="fas fa-eye" style="color:var(--p1);margin-right:8px"></i>Preview Data Import</h4>
+              <div style="display:flex;gap:8px">
+                <span id="previewCount" class="bg bg-i">0 data</span>
+                <button class="btn btn-s btn-sm" onclick="confirmImport()"><i class="fas fa-check"></i> Import Semua</button>
+                <button class="btn btn-o btn-sm" onclick="cancelImport()"><i class="fas fa-times"></i> Batal</button>
+              </div>
+            </div>
+            <div class="tw" style="max-height:300px;overflow-y:auto"><table><thead><tr><th>Nama</th><th>NIK</th><th>Perusahaan</th><th>Paket</th><th>Status</th></tr></thead><tbody id="previewTb"></tbody></table></div>
+          </div>
+          <!-- Import Result -->
+          <div id="importResult" style="display:none;margin-top:16px;padding:16px;border-radius:var(--rs);background:var(--success-bg);border:1px solid rgba(0,230,118,.2)">
+            <div style="display:flex;align-items:center;gap:12px"><i class="fas fa-check-circle" style="color:var(--success);font-size:20px"></i><div><strong id="importMsg" style="font-size:14px"></strong><p id="importDetail" style="font-size:12px;color:var(--text-muted);margin-top:2px"></p></div></div>
+          </div>
+          <div style="margin-top:20px;text-align:center;display:flex;gap:12px;justify-content:center">
+            <button class="btn btn-o btn-sm" onclick="dlTemplate()"><i class="fas fa-download"></i> Download Template Excel</button>
+            <button class="btn btn-p btn-sm" onclick="showAddM()"><i class="fas fa-user-plus"></i> Tambah Manual</button>
+          </div>
         </div></div>
         <div class="cd"><div class="cd-h"><h3>Daftar Peserta MCU</h3><span id="totalPC" style="font-size:13px;color:var(--text-muted)"></span></div><div class="cd-b">
           <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari nama, NIK, atau perusahaan..." id="srcPeserta" oninput="srcP()"></div>
           <div class="tw"><table><thead><tr><th>No</th><th>ID</th><th>Nama</th><th>NIK</th><th>Perusahaan</th><th>Paket</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="pesertaTb"></tbody></table></div>
-          <div class="es" id="emptyP" style="display:none"><i class="fas fa-users"></i><h3>Belum ada data peserta</h3><p>Upload file CSV atau tambah peserta secara manual</p></div>
+          <div class="es" id="emptyP" style="display:none"><i class="fas fa-users"></i><h3>Belum ada data peserta</h3><p>Upload file Excel atau tambah peserta secara manual</p></div>
         </div></div>
       </section>
       <!-- REGISTRASI -->
