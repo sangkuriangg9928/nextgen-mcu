@@ -24,13 +24,13 @@ module.exports = (req, res) => {
 
   // POST - Tambah paket baru
   if (req.method === 'POST') {
-    const { nama, items, harga, keterangan, unit } = req.body;
+    const { nama, items, harga, keterangan, unit, rsId } = req.body;
     if (!nama || !items || !items.length) {
       return res.status(400).json({ error: 'Nama paket dan items wajib diisi' });
     }
 
     const id = 'paket-' + Date.now().toString(36);
-    const newPaket = { id, nama, items, harga: harga || '', keterangan: keterangan || '', unit: unit || '' };
+    const newPaket = { id, nama, items, harga: harga || '', keterangan: keterangan || '', unit: unit || '', rsId: rsId || '' };
     db.paketMCU.push(newPaket);
     writeDB(db);
     return res.status(201).json(newPaket);
@@ -38,7 +38,7 @@ module.exports = (req, res) => {
 
   // PUT - Edit paket
   if (req.method === 'PUT') {
-    const { id, nama, items, harga, keterangan, unit } = req.body;
+    const { id, nama, items, harga, keterangan, unit, rsId } = req.body;
     if (!id) return res.status(400).json({ error: 'ID paket wajib' });
 
     const idx = db.paketMCU.findIndex(p => p.id === id);
@@ -49,6 +49,7 @@ module.exports = (req, res) => {
     if (harga !== undefined) db.paketMCU[idx].harga = harga;
     if (keterangan !== undefined) db.paketMCU[idx].keterangan = keterangan;
     if (unit !== undefined) db.paketMCU[idx].unit = unit;
+    if (rsId !== undefined) db.paketMCU[idx].rsId = rsId;
 
     writeDB(db);
     return res.json(db.paketMCU[idx]);
