@@ -45,12 +45,21 @@ const DEFAULT_DB = {
 function readDB() {
   try {
     if (fs.existsSync(DB_PATH)) {
-      return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+      // Ensure paketMCU always has defaults
+      if (!data.paketMCU || !data.paketMCU.length) {
+        data.paketMCU = JSON.parse(JSON.stringify(DEFAULT_DB.paketMCU));
+        writeDB(data);
+      }
+      return data;
     }
   } catch (e) {
     console.error('DB read error:', e);
   }
-  return JSON.parse(JSON.stringify(DEFAULT_DB));
+  // First time - write defaults
+  const fresh = JSON.parse(JSON.stringify(DEFAULT_DB));
+  writeDB(fresh);
+  return fresh;
 }
 
 function writeDB(db) {
