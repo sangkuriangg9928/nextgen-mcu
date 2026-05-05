@@ -6,6 +6,11 @@ const DB_PATH = path.join('/tmp', 'mcu-db.json');
 
 const DEFAULT_DB = {
   peserta: [],
+  rumahSakit: [
+    { id: 'rs-1', nama: 'RS Mitra Keluarga Grand Wisata', alamat: 'Bekasi', telepon: '' },
+    { id: 'rs-2', nama: 'RS Mitra Keluarga Kemayoran', alamat: 'Jakarta Pusat', telepon: '' },
+    { id: 'rs-3', nama: 'RS Mitra Keluarga Kelapa Gading', alamat: 'Jakarta Utara', telepon: '' }
+  ],
   paketMCU: [
     {
       id: 'paket-1',
@@ -46,17 +51,23 @@ function readDB() {
   try {
     if (fs.existsSync(DB_PATH)) {
       const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
-      // Ensure paketMCU always has defaults
+      let changed = false;
       if (!data.paketMCU || !data.paketMCU.length) {
         data.paketMCU = JSON.parse(JSON.stringify(DEFAULT_DB.paketMCU));
-        writeDB(data);
+        changed = true;
       }
+      if (!data.rumahSakit) {
+        data.rumahSakit = JSON.parse(JSON.stringify(DEFAULT_DB.rumahSakit));
+        changed = true;
+      }
+      if (!data.peserta) { data.peserta = []; changed = true; }
+      if (!data.settings) { data.settings = DEFAULT_DB.settings; changed = true; }
+      if (changed) writeDB(data);
       return data;
     }
   } catch (e) {
     console.error('DB read error:', e);
   }
-  // First time - write defaults
   const fresh = JSON.parse(JSON.stringify(DEFAULT_DB));
   writeDB(fresh);
   return fresh;

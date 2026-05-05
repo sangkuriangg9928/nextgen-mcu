@@ -6,17 +6,9 @@ module.exports = (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = readDB();
-  if (!db.rumahSakit) {
-    db.rumahSakit = [
-      { id: 'rs-1', nama: 'RS Mitra Keluarga Grand Wisata', alamat: 'Bekasi', telepon: '' },
-      { id: 'rs-2', nama: 'RS Mitra Keluarga Kemayoran', alamat: 'Jakarta Pusat', telepon: '' },
-      { id: 'rs-3', nama: 'RS Mitra Keluarga Kelapa Gading', alamat: 'Jakarta Utara', telepon: '' }
-    ];
-    writeDB(db);
-  }
 
   if (req.method === 'GET') {
-    return res.json(db.rumahSakit);
+    return res.json(db.rumahSakit || []);
   }
 
   if (req.method === 'POST') {
