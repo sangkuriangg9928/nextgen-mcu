@@ -38,8 +38,31 @@ if(typeof QRCode==='undefined'){
     <div class="sb-ft">NEXTGEN MCU v2.0</div>
   </aside>
   <main class="mn">
+    <!-- HOME / MENU UTAMA -->
+    <div id="homeScreen">
+      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:16px 32px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px">M</div><span style="color:#fff;font-size:16px;font-weight:700">MCU System</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="homeUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><button class="btn btn-o btn-sm" style="color:#fff;border-color:rgba(255,255,255,.2)" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
+      </div>
+      <div style="max-width:900px;margin:48px auto;padding:0 24px">
+        <h2 style="font-size:24px;font-weight:800;margin-bottom:8px">Menu Utama</h2>
+        <p style="color:var(--text-muted);margin-bottom:32px">Pilih modul layanan untuk memulai aktivitas Anda hari ini.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('registrasi')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-clipboard-check" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Registrasi Ulang</div><div style="font-size:12px;color:var(--text-muted)">Registrasi kedatangan peserta</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('pemeriksaan')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-stethoscope" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Pemeriksaan Medis</div><div style="font-size:12px;color:var(--text-muted)">Detail Pemeriksaan Medis</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('tracking')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-route" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Journey Peserta</div><div style="font-size:12px;color:var(--text-muted)">Proses Paket MCU</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('kehadiran')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-users" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Daftar Peserta</div><div style="font-size:12px;color:var(--text-muted)">Kelola data peserta</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('dashboard')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-th-large" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Dashboard</div><div style="font-size:12px;color:var(--text-muted)">Ringkasan statistik</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('review')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-check-square" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Cek Status Mandiri</div><div style="font-size:12px;color:var(--text-muted)">Cek mandiri status peserta</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('master')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-database" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Master Data</div><div style="font-size:12px;color:var(--text-muted)">Kelola data utama</div></div></div></div>
+          <div class="cd" style="cursor:pointer;transition:var(--tr)" onclick="enterModule('laporan')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:20px 24px"><div style="width:48px;height:48px;background:rgba(102,126,234,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-chart-bar" style="font-size:20px;color:var(--p1)"></i></div><div><div style="font-size:15px;font-weight:700">Laporan Pemeriksaan</div><div style="font-size:12px;color:var(--text-muted)">Cetak & review laporan MCU final</div></div></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- APP CONTENT (hidden until module selected) -->
+    <div id="appContent" style="display:none">
     <div class="tb">
-      <h2 id="pageTitle">Dashboard Monitoring</h2>
+      <div style="display:flex;align-items:center;gap:12px"><button class="btn btn-o btn-sm" onclick="backToHome()"><i class="fas fa-arrow-left"></i></button><h2 id="pageTitle">Dashboard Monitoring</h2></div>
       <div class="tb-r">
         <span class="tb-time" id="liveTime"></span>
         <button class="btn btn-o btn-sm" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -226,8 +249,21 @@ if(typeof QRCode==='undefined'){
           <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Paket</th><th>Kesimpulan</th><th>Dokter</th><th>Aksi</th></tr></thead><tbody id="lapTb"></tbody></table></div>
         </div></div>
       </section>
-    </div>
+    </div><!-- end pg -->
+    </div><!-- end appContent -->
   </main>
+</div>
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1a1a2e,#16213e);z-index:999;display:flex;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:40px;width:90%;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="width:60px;height:60px;background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#fff;font-size:24px;font-weight:800">M</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">NextGen MCU System</h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:28px">Mitra Keluarga Hospital</p>
+    <div class="fi" style="text-align:left;margin-bottom:16px"><label>Username</label><input type="text" id="loginUser" placeholder="Masukkan username"></div>
+    <div class="fi" style="text-align:left;margin-bottom:24px"><label>Password</label><input type="password" id="loginPass" placeholder="Masukkan password"></div>
+    <button class="btn btn-p btn-lg" style="width:100%" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:16px">Default: admin / admin123</p>
+  </div>
 </div>
 <!-- MODALS -->
 <div class="mo" id="mAdd"><div class="md"><div class="md-h"><h3>Tambah Peserta MCU</h3><button class="md-c" onclick="closeM('mAdd')">&times;</button></div><div class="md-b"><div class="fg">
