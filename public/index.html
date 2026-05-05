@@ -207,16 +207,23 @@ if(typeof QRCode==='undefined'){
       </section>
       <!-- REVIEW DOKTER -->
       <section class="sec" id="p-review">
-        <div class="cd"><div class="cd-h"><h3>Review Hasil oleh Dokter</h3></div><div class="cd-b">
+        <div class="cd"><div class="cd-h"><h3><i class="fas fa-user-md" style="color:var(--p1);margin-right:8px"></i>Review Hasil oleh Dokter</h3><span class="bg bg-p">Step 8</span></div><div class="cd-b">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Dokter mengecek kembali semua hasil pemeriksaan dan memberikan kesimpulan akhir</p>
           <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari peserta untuk review..." id="srcRev" oninput="srcRev2()"></div>
-          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Paket</th><th>Status</th><th>Kesimpulan</th><th>Aksi</th></tr></thead><tbody id="revTb"></tbody></table></div>
+          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Paket</th><th>Progress</th><th>Kesimpulan</th><th>Aksi</th></tr></thead><tbody id="revTb"></tbody></table></div>
         </div></div>
       </section>
       <!-- LAPORAN -->
       <section class="sec" id="p-laporan">
-        <div class="cd"><div class="cd-h"><h3>Laporan Hasil MCU</h3><button class="btn btn-p btn-sm" onclick="generateAll()"><i class="fas fa-file-pdf"></i> Generate Semua PDF</button></div><div class="cd-b">
+        <div class="cd"><div class="cd-h"><h3><i class="fas fa-file-medical-alt" style="color:var(--p1);margin-right:8px"></i>Laporan Hasil MCU</h3><span class="bg bg-p">Step 9</span></div><div class="cd-b">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Generate laporan hasil MCU lengkap dalam format PDF untuk masing-masing peserta</p>
+          <div style="display:flex;gap:12px;margin-bottom:20px">
+            <button class="btn btn-p btn-sm" onclick="generateAll()"><i class="fas fa-file-pdf"></i> Generate Semua PDF</button>
+            <button class="btn btn-o btn-sm" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+            <button class="btn btn-o btn-sm" onclick="exportSAP()"><i class="fas fa-database"></i> Export SAP (Step 10)</button>
+          </div>
           <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari peserta..." id="srcLap" oninput="srcLap2()"></div>
-          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Kesimpulan</th><th>Dokter</th><th>Aksi</th></tr></thead><tbody id="lapTb"></tbody></table></div>
+          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Paket</th><th>Kesimpulan</th><th>Dokter</th><th>Aksi</th></tr></thead><tbody id="lapTb"></tbody></table></div>
         </div></div>
       </section>
     </div>
