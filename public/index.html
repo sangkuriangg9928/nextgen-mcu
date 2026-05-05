@@ -19,6 +19,7 @@
     <nav class="sb-nav">
       <div class="nv act" data-page="dashboard" onclick="showPage('dashboard')"><i class="fas fa-th-large"></i><span>Dashboard</span></div>
       <div class="nv" data-page="master" onclick="showPage('master')"><i class="fas fa-database"></i><span>Master Data</span><span class="stp">1</span></div>
+      <div class="nv" data-page="paket" onclick="showPage('paket')"><i class="fas fa-box-open"></i><span>Paket MCU</span></div>
       <div class="nv" data-page="registrasi" onclick="showPage('registrasi')"><i class="fas fa-user-check"></i><span>Registrasi</span><span class="stp">2</span></div>
       <div class="nv" data-page="kehadiran" onclick="showPage('kehadiran')"><i class="fas fa-clipboard-check"></i><span>Kehadiran</span><span class="stp">3</span></div>
       <div class="nv" data-page="pemeriksaan" onclick="showPage('pemeriksaan')"><i class="fas fa-heartbeat"></i><span>Pemeriksaan</span><span class="stp">4-5</span></div>
@@ -89,6 +90,12 @@
           <div class="es" id="emptyP" style="display:none"><i class="fas fa-users"></i><h3>Belum ada data peserta</h3><p>Upload file Excel atau tambah peserta secara manual</p></div>
         </div></div>
       </section>
+      <!-- PAKET MCU -->
+      <section class="sec" id="p-paket">
+        <div class="cd"><div class="cd-h"><h3><i class="fas fa-box-open" style="color:var(--p1);margin-right:8px"></i>Manajemen Paket MCU</h3><button class="btn btn-p btn-sm" onclick="showAddPaket()"><i class="fas fa-plus"></i> Tambah Paket</button></div><div class="cd-b">
+          <div id="paketList"></div>
+        </div></div>
+      </section>
       <!-- REGISTRASI -->
       <section class="sec" id="p-registrasi">
         <div class="cd"><div class="cd-h"><h3>Registrasi Ulang Peserta</h3><button class="btn btn-p btn-sm" onclick="toast('Scan QR - Gunakan kamera device')"><i class="fas fa-qrcode"></i> Scan QR</button></div><div class="cd-b">
@@ -151,17 +158,30 @@
   <div class="fi"><label>NIK *</label><input type="text" id="fNIK" maxlength="16"></div>
   <div class="fi"><label>Tanggal Lahir</label><input type="date" id="fTgl"></div>
   <div class="fi"><label>Jenis Kelamin</label><select id="fJK"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
+  <div class="fi"><label>Jenis MCU</label><select id="fJenis"><option value="Perusahaan">Perusahaan (Corporate)</option><option value="Mandiri">Mandiri (Personal)</option></select></div>
   <div class="fi"><label>Alamat</label><input type="text" id="fAlm"></div>
   <div class="fi"><label>Telepon</label><input type="text" id="fTlp"></div>
   <div class="fi"><label>Email</label><input type="email" id="fEm"></div>
-  <div class="fi"><label>Perusahaan</label><input type="text" id="fPer"></div>
+  <div class="fi"><label>Perusahaan</label><input type="text" id="fPer" placeholder="Kosongkan jika Mandiri"></div>
   <div class="fi"><label>Jabatan</label><input type="text" id="fJab"></div>
   <div class="fi"><label>Departemen</label><input type="text" id="fDep"></div>
-  <div class="fi"><label>Paket MCU</label><select id="fPak"><option value="paket-1">Paket 1 - Basic</option><option value="paket-2">Paket 2 - Standard</option><option value="paket-3">Paket 3 - Executive</option><option value="paket-4">Paket 4 - Comprehensive</option></select></div>
+  <div class="fi"><label>Paket MCU</label><select id="fPak"></select></div>
 </div></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mAdd')">Batal</button><button class="btn btn-p" onclick="saveP()">Simpan Peserta</button></div></div></div>
 <div class="mo" id="mPem"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mPemTitle">Input Pemeriksaan</h3><button class="md-c" onclick="closeM('mPem')">&times;</button></div><div class="md-b" id="mPemBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPem')">Batal</button><button class="btn btn-s" onclick="savePem()">Simpan Hasil</button></div></div></div>
 <div class="mo" id="mRev"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mRevTitle">Review Dokter</h3><button class="md-c" onclick="closeM('mRev')">&times;</button></div><div class="md-b" id="mRevBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mRev')">Batal</button><button class="btn btn-p" onclick="saveRev()">Simpan Review</button></div></div></div>
 <div class="mo" id="mDet"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mDetTitle">Detail Peserta</h3><button class="md-c" onclick="closeM('mDet')">&times;</button></div><div class="md-b" id="mDetBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mDet')">Tutup</button></div></div></div>
+<div class="mo" id="mPaket"><div class="md"><div class="md-h"><h3 id="mPaketTitle">Tambah Paket MCU</h3><button class="md-c" onclick="closeM('mPaket')">&times;</button></div><div class="md-b">
+  <div class="fg">
+    <div class="fi"><label>Nama Paket *</label><input type="text" id="fpNama" placeholder="Contoh: Paket Executive Plus"></div>
+    <div class="fi"><label>Harga (Rp)</label><input type="number" id="fpHarga" placeholder="1500000"></div>
+  </div>
+  <div class="fi" style="margin-top:16px"><label>Keterangan</label><input type="text" id="fpKet" placeholder="Deskripsi singkat paket"></div>
+  <div class="fi" style="margin-top:16px"><label>Item Pemeriksaan *</label>
+    <div id="fpItems" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+    <div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="fpNewItem" placeholder="Tambah item baru..." style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px"><button class="btn btn-o btn-sm" onclick="addPaketItem()"><i class="fas fa-plus"></i></button></div>
+  </div>
+  <input type="hidden" id="fpId">
+</div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPaket')">Batal</button><button class="btn btn-p" onclick="savePaket()">Simpan Paket</button></div></div></div>
 <div id="toast"><div id="toastInner"></div></div>
 <script src="app.js"></script>
 </body>

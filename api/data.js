@@ -10,22 +10,30 @@ const DEFAULT_DB = {
     {
       id: 'paket-1',
       nama: 'Paket 1 - Basic',
-      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Laboratorium']
+      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Laboratorium'],
+      harga: '350000',
+      keterangan: 'Pemeriksaan dasar untuk screening awal'
     },
     {
       id: 'paket-2',
       nama: 'Paket 2 - Standard',
-      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi']
+      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi'],
+      harga: '750000',
+      keterangan: 'Pemeriksaan standar untuk karyawan'
     },
     {
       id: 'paket-3',
       nama: 'Paket 3 - Executive',
-      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG']
+      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG'],
+      harga: '1500000',
+      keterangan: 'Pemeriksaan lengkap untuk level manajerial'
     },
     {
       id: 'paket-4',
       nama: 'Paket 4 - Comprehensive',
-      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG', 'Tes Lainnya']
+      items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG', 'Tes Lainnya'],
+      harga: '2500000',
+      keterangan: 'Pemeriksaan paling lengkap termasuk tes tambahan'
     }
   ],
   settings: {

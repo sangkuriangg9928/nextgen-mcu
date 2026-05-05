@@ -136,6 +136,7 @@ function createPeserta(data, seq) {
     jabatan: data.jabatan || '',
     departemen: data.departemen || '',
     paketMCU: data.paketMCU || 'paket-1',
+    jenisMCU: data.jenisMCU || 'Perusahaan',
     // Status tracking
     statusKehadiran: 'Belum Hadir',
     status: 'Terdaftar',
