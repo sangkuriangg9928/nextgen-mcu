@@ -9,7 +9,17 @@ module.exports = (req, res) => {
 
   // GET - List semua paket
   if (req.method === 'GET') {
-    return res.json(db.paketMCU || []);
+    if (!db.paketMCU || !db.paketMCU.length) {
+      // Init defaults
+      db.paketMCU = [
+        { id: 'paket-1', nama: 'Paket 1 - Basic', items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Laboratorium'], harga: '350000', keterangan: 'Pemeriksaan dasar' },
+        { id: 'paket-2', nama: 'Paket 2 - Standard', items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi'], harga: '750000', keterangan: 'Pemeriksaan standar karyawan' },
+        { id: 'paket-3', nama: 'Paket 3 - Executive', items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG'], harga: '1500000', keterangan: 'Pemeriksaan lengkap manajerial' },
+        { id: 'paket-4', nama: 'Paket 4 - Comprehensive', items: ['Pemeriksaan Awal', 'Konsultasi Medis', 'Konsultasi Gizi', 'Laboratorium', 'Radiologi', 'EKG', 'Tes Lainnya'], harga: '2500000', keterangan: 'Pemeriksaan paling lengkap' }
+      ];
+      writeDB(db);
+    }
+    return res.json(db.paketMCU);
   }
 
   // POST - Tambah paket baru
