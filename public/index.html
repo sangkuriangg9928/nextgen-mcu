@@ -165,18 +165,34 @@ if(typeof QRCode==='undefined'){
           <tbody id="regTb"></tbody>
         </table></div>
       </section>
-      <!-- KEHADIRAN -->
+      <!-- KEHADIRAN (now Daftar Peserta) -->
       <section class="sec" id="p-kehadiran">
-        <div class="sg" id="kehStats"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
-          <div class="cd"><div class="cd-h"><h3><i class="fas fa-chart-pie" style="color:var(--p1);margin-right:8px"></i>Ringkasan Kehadiran</h3></div><div class="cd-b" id="kehRingkasan"></div></div>
-          <div class="cd"><div class="cd-h"><h3><i class="fas fa-list-ol" style="color:var(--accent2);margin-right:8px"></i>Detail Angka</h3></div><div class="cd-b" id="kehDetail"></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div><h2 style="font-size:22px;font-weight:800">Daftar Peserta MCU</h2><p style="color:var(--text-muted);font-size:13px">Kelola data peserta Medical Check Up</p></div>
+          <div style="display:flex;gap:12px"><button class="btn btn-o btn-sm" onclick="rKeh()"><i class="fas fa-sync"></i> Muat Ulang</button><button class="btn btn-sm" style="background:#FF6B00;color:#fff" onclick="document.getElementById('exFile2').click()"><i class="fas fa-file-excel"></i> Upload Excel</button><input type="file" id="exFile2" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)"></div>
         </div>
-        <div class="cd"><div class="cd-h"><h3>Daftar Peserta</h3><div style="display:flex;gap:8px">
-          <button class="btn btn-o btn-sm" onclick="fKeh('semua')">Semua</button>
-          <button class="btn btn-o btn-sm" onclick="fKeh('Hadir')">Hadir</button>
-          <button class="btn btn-o btn-sm" onclick="fKeh('Belum Hadir')">Belum Hadir</button>
-        </div></div><div class="cd-b"><div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Paket</th><th>Status</th><th>Waktu Registrasi</th></tr></thead><tbody id="kehTb"></tbody></table></div></div></div>
+        <!-- Filter -->
+        <div style="display:flex;gap:12px;align-items:flex-end;margin:24px 0;flex-wrap:wrap;padding:20px;border:1.5px solid var(--border);border-radius:var(--rs)">
+          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="kehTanggal"></div>
+          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="kehInstitusi"><option value="">Semua Institusi</option></select></div>
+          <div class="fi" style="margin:0;flex:1;min-width:200px"><label>CARI PESERTA</label><input type="text" id="kehSearch" placeholder="Cari nama, ID, perusahaan..." oninput="filterKeh()"></div>
+        </div>
+        <!-- Tabs -->
+        <div style="display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border)">
+          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;border-bottom:2px solid #1a3a6b;color:#1a3a6b;font-weight:700" onclick="fKeh('semua')">Semua</button>
+          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;color:var(--text-muted)" onclick="fKeh('Belum Hadir')">Belum Registrasi</button>
+          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;color:var(--text-muted)" onclick="fKeh('Hadir')">Registrasi</button>
+          <span style="margin-left:auto;font-size:13px;color:var(--text-muted);align-self:center" id="kehTotal">Total Result: 0</span>
+        </div>
+        <!-- Table -->
+        <div class="tw"><table>
+          <thead><tr style="background:#f8f9fa"><th>TGL MCU</th><th>PATIENT ID</th><th>NAMA PESERTA</th><th>L/P</th><th>BATCH / CABANG</th><th>NO KARYAWAN</th><th>NO TELEPON</th><th>ON CHECK</th><th>STATUS</th><th>AKSI</th></tr></thead>
+          <tbody id="kehTb"></tbody>
+        </table></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding:12px 0;border-top:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text-muted)" id="kehRowCount">Menampilkan 0 baris</span>
+          <button class="btn btn-o btn-sm" onclick="showAddPeserta()"><i class="fas fa-plus"></i> Tambah Manual</button>
+        </div>
       </section>
       <!-- PEMERIKSAAN -->
       <section class="sec" id="p-pemeriksaan">
@@ -256,20 +272,42 @@ if(typeof QRCode==='undefined'){
   </div>
 </div>
 <!-- MODALS -->
-<div class="mo" id="mAdd"><div class="md"><div class="md-h"><h3>Tambah Peserta MCU</h3><button class="md-c" onclick="closeM('mAdd')">&times;</button></div><div class="md-b"><div class="fg">
-  <div class="fi"><label>Nama Lengkap *</label><input type="text" id="fNama"></div>
-  <div class="fi"><label>NIK *</label><input type="text" id="fNIK" maxlength="16"></div>
-  <div class="fi"><label>Tanggal Lahir</label><input type="date" id="fTgl"></div>
-  <div class="fi"><label>Jenis Kelamin</label><select id="fJK"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
-  <div class="fi"><label>Jenis MCU</label><select id="fJenis"><option value="Perusahaan">Perusahaan (Corporate)</option><option value="Mandiri">Mandiri (Personal)</option></select></div>
-  <div class="fi"><label>Alamat</label><input type="text" id="fAlm"></div>
-  <div class="fi"><label>Telepon</label><input type="text" id="fTlp"></div>
-  <div class="fi"><label>Email</label><input type="email" id="fEm"></div>
-  <div class="fi"><label>Perusahaan</label><input type="text" id="fPer" placeholder="Kosongkan jika Mandiri"></div>
-  <div class="fi"><label>Jabatan</label><input type="text" id="fJab"></div>
-  <div class="fi"><label>Departemen</label><input type="text" id="fDep"></div>
-  <div class="fi"><label>Paket MCU</label><select id="fPak"></select></div>
-</div></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mAdd')">Batal</button><button class="btn btn-p" onclick="saveP()">Simpan Peserta</button></div></div></div>
+<div class="mo" id="mAdd"><div class="md" style="max-width:700px"><div class="md-h"><h3>Tambah Peserta Manual</h3><button class="md-c" onclick="closeM('mAdd')">&times;</button></div><div class="md-b">
+  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA DASAR</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="fi"><label>Tanggal MCU *</label><input type="date" id="fTglMCU" value="2026-05-05"></div>
+    <div class="fi"><label>Institusi / Cabang *</label><select id="fInstitusi"></select></div>
+    <div class="fi"><label>Status MCU</label><select id="fStatusMCU"><option>Belum Registrasi</option><option>Sudah Registrasi</option></select></div>
+  </div>
+  <div class="fi" style="margin-top:12px"><label>Patient ID *</label><input type="text" id="fPatientId" placeholder="PA-XXXX-XXXX" style="max-width:300px"></div>
+  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA PESERTA</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="fi"><label>Nama Peserta *</label><input type="text" id="fNama" placeholder="Nama Lengkap"></div>
+    <div class="fi"><label>Jenis Kelamin</label><select id="fJK"><option value="Laki-laki">Laki-laki (L)</option><option value="Perempuan">Perempuan (P)</option></select></div>
+    <div class="fi"><label>Tanggal Lahir</label><input type="date" id="fTgl"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px">
+    <div class="fi"><label>No KTP</label><input type="text" id="fNIK" placeholder="3201234567890001" maxlength="16"></div>
+    <div class="fi"><label>Telp 1</label><input type="text" id="fTlp" placeholder="08xxx"></div>
+    <div class="fi"><label>Telp 2</label><input type="text" id="fTlp2" placeholder="021-xxx"></div>
+  </div>
+  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA PERUSAHAAN & MCU</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="fi"><label>Perusahaan *</label><input type="text" id="fPer" placeholder="Nama Perusahaan"></div>
+    <div class="fi"><label>Departemen</label><input type="text" id="fDep" placeholder="Engineering, HRD, dll"></div>
+    <div class="fi"><label>Telp Perusahaan</label><input type="text" id="fTlpPer" placeholder="021-xxx"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px">
+    <div class="fi"><label>No Karyawan</label><input type="text" id="fNoKar" placeholder="-"></div>
+    <div class="fi"><label>Paket MCU *</label><select id="fPak"></select></div>
+    <div class="fi"><label>Employee Responsible</label><input type="text" id="fEmpResp" placeholder="Nama penanggung jawab"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+    <div class="fi"><label>Klinik</label><input type="text" id="fKlinik" placeholder="Klinik A"></div>
+    <div class="fi"><label>Unit</label><input type="text" id="fUnit" placeholder="Unit Radiologi"></div>
+  </div>
+  <div style="margin-top:16px;padding:12px 16px;background:#FFFAE6;border-radius:var(--rs);border:1px solid #FFD600;font-size:12px"><strong style="color:#FF6B00">Info:</strong> No Case akan dibuat secara otomatis oleh sistem secara acak (format: <code>XXXX</code>).</div>
+</div><div class="md-f"><button class="btn btn-o" onclick="closeM('mAdd')">Batal</button><button class="btn btn-sm" style="background:#36B37E;color:#fff;padding:10px 24px" onclick="saveP()">Simpan Peserta</button></div></div></div>
 <div class="mo" id="mPem"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mPemTitle">Input Pemeriksaan</h3><button class="md-c" onclick="closeM('mPem')">&times;</button></div><div class="md-b" id="mPemBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPem')">Batal</button><button class="btn btn-s" onclick="savePem()">Simpan Hasil</button></div></div></div>
 <div class="mo" id="mRev"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mRevTitle">Review Dokter</h3><button class="md-c" onclick="closeM('mRev')">&times;</button></div><div class="md-b" id="mRevBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mRev')">Batal</button><button class="btn btn-p" onclick="saveRev()">Simpan Review</button></div></div></div>
 <div class="mo" id="mDet"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mDetTitle">Detail Peserta</h3><button class="md-c" onclick="closeM('mDet')">&times;</button></div><div class="md-b" id="mDetBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mDet')">Tutup</button></div></div></div>
