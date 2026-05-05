@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+// Fallback: if QRCode not loaded, use API-based QR
+if(typeof QRCode==='undefined'){
+  window.QRCode={toDataURL:function(text,opts,cb){cb(null,'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(text));}};
+}
+</script>
 </head>
 <body>
 <div class="app">
