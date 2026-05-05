@@ -86,15 +86,16 @@ function retakePhoto(){regFoto=null;document.getElementById('camPreview').style.
 function confirmPhoto(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}closeM('mCamera');document.getElementById('regFotoPreview').innerHTML=`<img src="${regFoto}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)">`;}
 function closeCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}closeM('mCamera');}
 function handleRegFoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{regFoto=ev.target.result;document.getElementById('regFotoPreview').innerHTML=`<img src="${regFoto}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)">`;};r.readAsDataURL(f);}
-function simpanRegistrasi(){const nama=gv('rNama').trim(),nik=gv('rNIK').trim();if(!nama||!nik)return toast('Nama dan NIK wajib');const existId=gv('rExistId');let peserta;if(existId){registrasiPeserta(existId,regFoto);peserta=getAllPeserta().find(p=>p.id===existId);}else{peserta=addPeserta({nama,nik,tanggalLahir:gv('rTgl'),jenisKelamin:gv('rJK'),telepon:gv('rTlp'),perusahaan:gv('rJenis')==='Mandiri'?'':gv('rPer'),paketMCU:gv('rPak')||'paket-1',jenisMCU:gv('rJenis'),foto:regFoto||''});registrasiPeserta(peserta.id,regFoto);}
-  const pid=peserta.id;
-  // Generate QR as data URL
-  if(typeof QRCode!=='undefined'){
-    QRCode.toDataURL(pid,{width:200,margin:2},function(err,url){
-      const qrImg=url||'';
-      showRegResult(pid,nama,regFoto,qrImg);
-    });
-  }else{showRegResult(pid,nama,regFoto,'');}
+function simpanRegistrasi(){const nama=gv('rNama').trim(),nik=gv('rNIK').trim();if(!nama||!nik)return toast('Nama dan NIK wajib');const existId=gv('rExistId');let peserta;if(existId){registrasiPeserta(existId,regFoto);peserta=getAllPeserta().find(p=>p.id===existId);}else{
+  // Cek duplikat NIK
+  const existing=getAllPeserta().find(p=>p.nik===nik);
+  if(existing){toast('NIK sudah terdaftar. Gunakan "Dari Master Data".');return;}
+  peserta=addPeserta({nama,nik,tanggalLahir:gv('rTgl'),jenisKelamin:gv('rJK'),telepon:gv('rTlp'),perusahaan:gv('rJenis')==='Mandiri'?'':gv('rPer'),paketMCU:gv('rPak')||'paket-1',jenisMCU:gv('rJenis'),foto:regFoto||''});registrasiPeserta(peserta.id,regFoto);}
+  const pid=existId||peserta.id;const pNama=peserta?peserta.nama:nama;const pFoto=regFoto||peserta.foto||'';
+  // Generate QR
+  if(typeof QRCode!=='undefined'&&QRCode.toDataURL){
+    QRCode.toDataURL(pid,{width:200,margin:2},function(err,url){showRegResult(pid,pNama,pFoto,url||'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(pid));});
+  }else{showRegResult(pid,pNama,pFoto,'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(pid));}
   clearRegForm();D=getAllPeserta();rRegToday();toast('Registrasi berhasil');}
 function showRegResult(pid,nama,foto,qrImg){
   document.getElementById('regQRResult').style.display='block';
