@@ -179,14 +179,17 @@ if(typeof QRCode==='undefined'){
       <section class="sec" id="p-pemeriksaan">
         <div class="cd"><div class="cd-h"><h3>Input Hasil Pemeriksaan</h3></div><div class="cd-b">
           <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari peserta..." id="srcPem" oninput="srcPem2()"></div>
-          <div class="ut">
-            <button class="utb act" onclick="switchUnit('Pemeriksaan Awal')">Pemeriksaan Awal</button>
-            <button class="utb" onclick="switchUnit('Konsultasi Medis')">Konsultasi Medis</button>
-            <button class="utb" onclick="switchUnit('Konsultasi Gizi')">Konsultasi Gizi</button>
-            <button class="utb" onclick="switchUnit('Laboratorium')">Laboratorium</button>
-            <button class="utb" onclick="switchUnit('Radiologi')">Radiologi</button>
+          <div class="ut" id="unitTabsContainer">
+            <button class="utb act" onclick="switchUnit('Konsultasi Dokter Umum MCU')">Konsultasi Dokter</button>
+            <button class="utb" onclick="switchUnit('Darah Lengkap')">Darah Lengkap</button>
+            <button class="utb" onclick="switchUnit('Gula Darah Puasa')">Gula Darah</button>
+            <button class="utb" onclick="switchUnit('Kolesterol Total')">Kolesterol</button>
+            <button class="utb" onclick="switchUnit('Thorax AP/PA')">Thorax/Rontgen</button>
             <button class="utb" onclick="switchUnit('EKG')">EKG</button>
-            <button class="utb" onclick="switchUnit('Tes Lainnya')">Tes Lainnya</button>
+            <button class="utb" onclick="switchUnit('USG Abdomen')">USG</button>
+            <button class="utb" onclick="switchUnit('Treadmill')">Treadmill</button>
+            <button class="utb" onclick="switchUnit('Visus Mata')">Visus Mata</button>
+            <button class="utb" onclick="switchUnit('HBsAg')">HBsAg</button>
           </div>
           <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Paket</th><th>Status Unit</th><th>Aksi</th></tr></thead><tbody id="pemTb"></tbody></table></div>
         </div></div>
