@@ -16,7 +16,7 @@
   --shx:0 16px 64px rgba(108,99,255,.16);
   --tr:all .25s cubic-bezier(.4,0,.2,1);
 }
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#D6E4F0;color:var(--text);min-height:100vh;overflow-x:hidden}
 .app{display:flex;min-height:100vh}
 
 /* Sidebar */
