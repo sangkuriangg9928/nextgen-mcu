@@ -49,11 +49,15 @@ if(typeof QRCode==='undefined'){
       <!-- DASHBOARD -->
       <section class="sec act" id="p-dashboard">
         <div class="sg" id="dashStats"></div>
-        <div class="dg">
-          <div class="cd"><div class="cd-h"><h3>Progress per Paket MCU</h3></div><div class="cd-b" id="paketProg"></div></div>
-          <div class="cd"><div class="cd-h"><h3>Ringkasan Kehadiran</h3></div><div class="cd-b" id="kehChart"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px">
+          <div class="cd"><div class="cd-h"><h3>Kehadiran</h3></div><div class="cd-b" id="kehChart"></div></div>
+          <div class="cd"><div class="cd-h"><h3>Progress Paket</h3></div><div class="cd-b" id="paketProg"></div></div>
+          <div class="cd"><div class="cd-h"><h3>Kesimpulan MCU</h3></div><div class="cd-b" id="dashKesimpulan"></div></div>
         </div>
-        <div class="cd" style="margin-top:24px"><div class="cd-h"><h3>Status per Unit Pemeriksaan</h3></div><div class="cd-b"><div class="tw"><table id="unitTbl"><thead><tr><th>Unit</th><th>Checked</th><th>On Progress</th><th>Pending</th><th>Progress</th></tr></thead><tbody></tbody></table></div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="cd"><div class="cd-h"><h3>Status per Unit</h3></div><div class="cd-b"><div class="tw"><table id="unitTbl"><thead><tr><th>Unit</th><th>Checked</th><th>On Progress</th><th>Pending</th><th>Progress</th></tr></thead><tbody></tbody></table></div></div></div>
+          <div class="cd"><div class="cd-h"><h3>Peserta Terbaru</h3></div><div class="cd-b" id="dashRecent"></div></div>
+        </div>
       </section>
       <!-- MASTER DATA -->
       <section class="sec" id="p-master">
