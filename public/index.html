@@ -99,33 +99,49 @@
       </section>
       <!-- REGISTRASI -->
       <section class="sec" id="p-registrasi">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
-          <!-- Panel Kiri: Cari & Registrasi -->
-          <div class="cd"><div class="cd-h"><h3><i class="fas fa-user-check" style="color:var(--p1);margin-right:8px"></i>Registrasi Peserta</h3><span class="bg bg-p">Step 2</span></div><div class="cd-b">
-            <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari nama atau ID peserta..." id="srcReg" oninput="srcReg2()"></div>
-            <div class="tw" style="max-height:400px;overflow-y:auto"><table><thead><tr><th>ID</th><th>Nama</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="regTb"></tbody></table></div>
-          </div></div>
-          <!-- Panel Kanan: Camera + QR -->
-          <div class="cd"><div class="cd-h"><h3><i class="fas fa-camera" style="color:var(--accent2);margin-right:8px"></i>Ambil Foto & QR Code</h3></div><div class="cd-b" id="regCamPanel">
-            <div style="text-align:center;padding:20px">
-              <div style="width:200px;height:200px;background:var(--bg);border-radius:var(--r);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border)" id="regPhotoPreview"><i class="fas fa-user" style="font-size:48px;color:var(--text-muted)"></i></div>
-              <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px" id="regCamInfo">Pilih peserta dari tabel, lalu ambil foto</p>
-              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-                <button class="btn btn-p btn-sm" onclick="openCamera()" id="btnCamera"><i class="fas fa-camera"></i> Buka Kamera</button>
-                <button class="btn btn-o btn-sm" onclick="uploadFotoManual()"><i class="fas fa-upload"></i> Upload Foto</button>
-                <input type="file" id="fotoUpload" accept="image/*" style="display:none" onchange="handleFotoUpload(event)">
-              </div>
+        <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px">
+          <!-- Form Registrasi -->
+          <div class="cd"><div class="cd-h"><h3><i class="fas fa-user-plus" style="color:var(--p1);margin-right:8px"></i>Form Registrasi Peserta</h3><span class="bg bg-p">Step 2</span></div><div class="cd-b">
+            <div style="display:flex;gap:8px;margin-bottom:20px">
+              <button class="btn btn-p btn-sm" id="btnRegBaru" onclick="regModeBaru()"><i class="fas fa-plus"></i> Peserta Baru</button>
+              <button class="btn btn-o btn-sm" id="btnRegExist" onclick="regModeExist()"><i class="fas fa-search"></i> Dari Master Data</button>
             </div>
+            <!-- Search existing -->
+            <div id="regSearchExist" style="display:none;margin-bottom:16px">
+              <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari nama/ID dari master data..." id="srcRegExist" oninput="srcRegExist2()"></div>
+              <div class="tw" style="max-height:200px;overflow-y:auto"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Aksi</th></tr></thead><tbody id="regExistTb"></tbody></table></div>
+            </div>
+            <!-- Form fields -->
+            <div class="fg" id="regForm">
+              <div class="fi"><label>Jenis MCU *</label><select id="rJenis" onchange="togglePerusahaan()"><option value="Perusahaan">Perusahaan (Corporate)</option><option value="Mandiri">Mandiri (Personal)</option></select></div>
+              <div class="fi" id="rPerDiv"><label>Nama Perusahaan</label><input type="text" id="rPer" placeholder="Nama perusahaan"></div>
+              <div class="fi"><label>Nama Lengkap *</label><input type="text" id="rNama"></div>
+              <div class="fi"><label>NIK *</label><input type="text" id="rNIK" maxlength="16"></div>
+              <div class="fi"><label>Tanggal Lahir</label><input type="date" id="rTgl"></div>
+              <div class="fi"><label>Jenis Kelamin</label><select id="rJK"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
+              <div class="fi"><label>Telepon</label><input type="text" id="rTlp"></div>
+              <div class="fi"><label>Paket MCU *</label><select id="rPak"></select></div>
+            </div>
+            <input type="hidden" id="rExistId" value="">
           </div></div>
+          <!-- Foto + QR -->
+          <div>
+            <div class="cd" style="margin-bottom:16px"><div class="cd-h"><h3><i class="fas fa-camera" style="color:var(--accent2);margin-right:8px"></i>Foto Peserta</h3></div><div class="cd-b" style="text-align:center">
+              <div style="width:180px;height:180px;background:var(--bg);border-radius:var(--r);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border);overflow:hidden" id="regFotoPreview"><i class="fas fa-user" style="font-size:48px;color:var(--text-muted)"></i></div>
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-p btn-sm" onclick="openRegCamera()"><i class="fas fa-camera"></i> Kamera</button>
+                <button class="btn btn-o btn-sm" onclick="document.getElementById('regFotoFile').click()"><i class="fas fa-upload"></i> Upload</button>
+                <input type="file" id="regFotoFile" accept="image/*" style="display:none" onchange="handleRegFoto(event)">
+              </div>
+            </div></div>
+            <button class="btn btn-s btn-lg" style="width:100%" onclick="simpanRegistrasi()"><i class="fas fa-save"></i> Simpan & Generate QR</button>
+          </div>
         </div>
-        <!-- Scan QR -->
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-qrcode" style="color:var(--p1);margin-right:8px"></i>Scan QR Code Peserta</h3><button class="btn btn-p btn-sm" onclick="openScanner()"><i class="fas fa-camera"></i> Buka Scanner</button></div><div class="cd-b">
-          <div id="scanResult" style="display:none"></div>
-          <div id="scanEmpty"><div class="es" style="padding:30px"><i class="fas fa-qrcode"></i><h3>Scan QR untuk lihat data peserta</h3><p>QR Code berisi ID peserta - scan untuk tampilkan data lengkap + foto</p></div></div>
-        </div></div>
-        <!-- Daftar sudah registrasi -->
-        <div class="cd" style="margin-top:24px"><div class="cd-h"><h3>Peserta Sudah Registrasi</h3><span id="regCount" style="font-size:12px;color:var(--text-muted)"></span></div><div class="cd-b">
-          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Foto</th><th>QR Code</th><th>Waktu</th></tr></thead><tbody id="regDoneTb"></tbody></table></div>
+        <!-- Hasil QR -->
+        <div class="cd" style="margin-top:24px;display:none" id="regQRResult"><div class="cd-h"><h3><i class="fas fa-qrcode" style="color:var(--success);margin-right:8px"></i>QR Code Peserta</h3><button class="btn btn-o btn-sm" onclick="printQR()"><i class="fas fa-print"></i> Print</button></div><div class="cd-b" id="regQRBody" style="text-align:center"></div></div>
+        <!-- Daftar registrasi hari ini -->
+        <div class="cd" style="margin-top:24px"><div class="cd-h"><h3>Registrasi Hari Ini</h3><span id="regTodayCount" class="bg bg-i">0</span></div><div class="cd-b">
+          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Jenis</th><th>Foto</th><th>QR</th><th>Waktu</th></tr></thead><tbody id="regTodayTb"></tbody></table></div>
         </div></div>
       </section>
       <!-- KEHADIRAN -->
