@@ -197,11 +197,25 @@ if(typeof QRCode==='undefined'){
       </section>
       <!-- TRACKING -->
       <section class="sec" id="p-tracking">
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-mobile-alt" style="color:var(--p1);margin-right:8px"></i>Tracking Mandiri Peserta (My MCU)</h3><span class="bg bg-p">Step 6</span></div><div class="cd-b">
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Peserta dapat melihat progres pemeriksaan dirinya dan langkah selanjutnya</p>
-          <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Masukkan ID atau nama peserta..." id="srcTrack" oninput="srcTrack2()"></div>
-          <div id="trackRes"></div>
-        </div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="display:flex;align-items:center;gap:10px"><i class="fas fa-map-marker-alt" style="color:#FF5252;font-size:20px"></i><h2 style="font-size:22px;font-weight:800">Journey Pasien</h2></div>
+          <span class="bg bg-p" id="trackCount">Menampilkan 0 antrean</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px">Lacak dan verifikasi perjalanan pemeriksaan antar poli.</p>
+        <!-- Filter -->
+        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;padding:20px;border:1.5px dashed var(--border);border-radius:var(--rs)">
+          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="trackTanggal" value="2026-05-05"></div>
+          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="trackInstitusi"><option value="">Semua Institusi</option></select></div>
+          <button class="btn btn-o btn-sm" style="height:40px" onclick="rTrack()"><i class="fas fa-sync"></i> Muat Ulang</button>
+          <div class="fi" style="margin:0;flex:1;min-width:200px"><label style="visibility:hidden">x</label><div style="display:flex;gap:8px"><input type="text" id="srcTrack" placeholder="ID / Nama / Perusahaan..." oninput="srcTrack2()" style="flex:1"><button class="btn btn-o btn-sm" style="height:40px" onclick="srcTrack2()">Cari</button><button class="btn btn-p btn-sm" style="height:40px;background:#1a3a6b" onclick="toast('Scan QR - arahkan kamera ke QR peserta')"><i class="fas fa-qrcode"></i> Scan QR</button></div></div>
+        </div>
+        <!-- Table -->
+        <div class="tw"><table>
+          <thead><tr><th>No</th><th>Patient ID</th><th>Nama Peserta</th><th>Perusahaan</th><th>Paket MCU</th><th>Status Journey</th></tr></thead>
+          <tbody id="trackTb"></tbody>
+        </table></div>
+        <!-- Detail panel -->
+        <div id="trackRes" style="margin-top:24px"></div>
       </section>
       <!-- REVIEW DOKTER -->
       <section class="sec" id="p-review">
