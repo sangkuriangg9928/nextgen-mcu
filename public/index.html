@@ -109,8 +109,12 @@
           <div class="cd"><div class="cd-h"><h3><i class="fas fa-camera" style="color:var(--accent2);margin-right:8px"></i>Ambil Foto & QR Code</h3></div><div class="cd-b" id="regCamPanel">
             <div style="text-align:center;padding:20px">
               <div style="width:200px;height:200px;background:var(--bg);border-radius:var(--r);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border)" id="regPhotoPreview"><i class="fas fa-user" style="font-size:48px;color:var(--text-muted)"></i></div>
-              <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Pilih peserta dari tabel, lalu ambil foto</p>
-              <button class="btn btn-p btn-sm" onclick="openCamera()" disabled id="btnCamera"><i class="fas fa-camera"></i> Buka Kamera</button>
+              <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px" id="regCamInfo">Pilih peserta dari tabel, lalu ambil foto</p>
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-p btn-sm" onclick="openCamera()" id="btnCamera"><i class="fas fa-camera"></i> Buka Kamera</button>
+                <button class="btn btn-o btn-sm" onclick="uploadFotoManual()"><i class="fas fa-upload"></i> Upload Foto</button>
+                <input type="file" id="fotoUpload" accept="image/*" style="display:none" onchange="handleFotoUpload(event)">
+              </div>
             </div>
           </div></div>
         </div>
