@@ -11,9 +11,9 @@ function sbg(st){if(!st)return'<span class="bg bg-g">-</span>';if(st.startsWith(
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastInner').textContent=msg;t.style.display='block';setTimeout(()=>{t.style.display='none';},3500);}
 function openM(id){document.getElementById(id).classList.add('show');}
 function closeM(id){document.getElementById(id).classList.remove('show');}
-function refreshData(){showPage(document.querySelector('.nv.act').dataset.page);}
+function refreshData(){const act=document.querySelector('.nv.act');if(act)showPage(act.dataset.page);else rDash();}
 function gv(id){const e=document.getElementById(id);return e?e.value:'';}
-setInterval(()=>{const n=new Date();document.getElementById('liveTime').textContent=n.toLocaleTimeString('id-ID')+' | '+n.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short',year:'numeric'});},1000);
+setInterval(()=>{const n=new Date();const el=document.getElementById('liveTime');if(el)el.textContent=n.toLocaleTimeString('id-ID')+' | '+n.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short',year:'numeric'});},1000);
 
 const PT={'dashboard':'Dashboard Monitoring','master':'Master Data Peserta','rs':'Master Rumah Sakit','paket':'Manajemen Paket MCU','registrasi':'Registrasi','kehadiran':'Monitoring Kehadiran','pemeriksaan':'Input Pemeriksaan','tracking':'Tracking Peserta','review':'Review Dokter','laporan':'Laporan MCU'};
 function showPage(p){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));document.querySelectorAll('.nv').forEach(n=>n.classList.remove('act'));document.getElementById('p-'+p).classList.add('act');document.querySelector('.nv[data-page="'+p+'"]').classList.add('act');document.getElementById('pageTitle').textContent=PT[p]||'';D=getAllPeserta();if(p==='dashboard')rDash();else if(p==='master')rMaster();else if(p==='rs')rRS();else if(p==='paket')rPaket();else if(p==='registrasi')rReg();else if(p==='kehadiran')rKeh();else if(p==='pemeriksaan')rPem();else if(p==='tracking')rTrack();else if(p==='review')rRev();else if(p==='laporan')rLap();}
