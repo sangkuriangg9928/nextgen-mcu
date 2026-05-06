@@ -3,368 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NextGen Mobile MCU - Mitra Keluarga</title>
+<title>NextGen MCU System - Mitra Keluarga</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-<script>
-// Fallback: if QRCode not loaded, use API-based QR
-if(typeof QRCode==='undefined'){
-  window.QRCode={toDataURL:function(text,opts,cb){cb(null,'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(text));}};
-}
-</script>
+<script>if(typeof QRCode==='undefined'){window.QRCode={toDataURL:function(t,o,cb){cb(null,'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(t));}};};</script>
 </head>
 <body>
-<div class="app">
-  <aside class="sb">
-    <div class="sb-hd">
-      <div class="logo"><div class="logo-icon">M</div><div><h2>NextGen MCU</h2></div></div>
-      <p>MITRA KELUARGA HOSPITAL</p>
-    </div>
-    <nav class="sb-nav">
-      <div class="nv act" data-page="dashboard" onclick="showPage('dashboard')"><i class="fas fa-th-large"></i><span>Dashboard</span></div>
-      <div class="nv" data-page="master" onclick="showPage('master')"><i class="fas fa-database"></i><span>Master Data</span><span class="stp">1</span></div>
-      <div class="nv" data-page="paket" onclick="showPage('paket')"><i class="fas fa-box-open"></i><span>Paket MCU</span></div>
-      <div class="nv" data-page="rs" onclick="showPage('rs')"><i class="fas fa-hospital"></i><span>Rumah Sakit</span></div>
-      <div class="nv" data-page="registrasi" onclick="showPage('registrasi')"><i class="fas fa-user-check"></i><span>Registrasi</span><span class="stp">2</span></div>
-      <div class="nv" data-page="kehadiran" onclick="showPage('kehadiran')"><i class="fas fa-clipboard-check"></i><span>Kehadiran</span><span class="stp">3</span></div>
-      <div class="nv" data-page="pemeriksaan" onclick="showPage('pemeriksaan')"><i class="fas fa-heartbeat"></i><span>Pemeriksaan</span><span class="stp">4-5</span></div>
-      <div class="nv" data-page="tracking" onclick="showPage('tracking')"><i class="fas fa-route"></i><span>Tracking</span><span class="stp">6</span></div>
-      <div class="nv" data-page="review" onclick="showPage('review')"><i class="fas fa-user-md"></i><span>Review Dokter</span><span class="stp">8</span></div>
-      <div class="nv" data-page="laporan" onclick="showPage('laporan')"><i class="fas fa-file-medical-alt"></i><span>Laporan</span><span class="stp">9</span></div>
-    </nav>
-    <div class="sb-ft">NEXTGEN MCU v2.0</div>
-  </aside>
-  <main class="mn">
-    <!-- HOME / MENU UTAMA -->
-    <div id="homeScreen" style="margin-left:0;background:#ffffff;min-height:100vh">
-      <div style="background:#1a3a6b;padding:16px 32px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px">M</div><span style="color:#fff;font-size:16px;font-weight:700">MCU System</span></div>
-        <div style="display:flex;align-items:center;gap:16px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-user" style="color:rgba(255,255,255,.7);font-size:14px"></i></div><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="homeUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><button class="btn btn-o btn-sm" style="color:#fff;border-color:rgba(255,255,255,.2)" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
-      </div>
-      <div style="max-width:1100px;margin:32px auto;padding:0 32px;background:transparent">
-        <h2 style="font-size:28px;font-weight:900;margin-bottom:6px">Menu Utama</h2>
-        <p style="color:var(--text-muted);margin-bottom:24px;font-size:14px">Pilih modul layanan untuk memulai aktivitas Anda hari ini.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('registrasi')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-clipboard-check" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Registrasi Ulang</div><div style="font-size:12px;color:var(--text-muted)">Registrasi kedatangan peserta</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('pemeriksaan')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-stethoscope" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Pemeriksaan Medis</div><div style="font-size:12px;color:var(--text-muted)">Detail Pemeriksaan Medis</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('tracking')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-route" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Journey Peserta</div><div style="font-size:12px;color:var(--text-muted)">Proses Paket MCU</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('kehadiran')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-users" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Daftar Peserta</div><div style="font-size:12px;color:var(--text-muted)">Kelola data peserta</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('dashboard')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-th-large" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Dashboard</div><div style="font-size:12px;color:var(--text-muted)">Ringkasan statistik</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('review')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-check-square" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Cek Status Mandiri</div><div style="font-size:12px;color:var(--text-muted)">Cek mandiri status peserta</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('master')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-database" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Master Data</div><div style="font-size:12px;color:var(--text-muted)">Kelola data utama</div></div></div></div>
-          <div class="cd" style="cursor:pointer;transition:var(--tr);background:#fff" onclick="enterModule('laporan')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''"><div class="cd-b" style="display:flex;align-items:center;gap:16px;padding:28px 28px"><div style="width:54px;height:54px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center"><i class="fas fa-chart-bar" style="font-size:22px;color:#1a3a6b"></i></div><div><div style="font-size:17px;font-weight:800">Laporan Pemeriksaan</div><div style="font-size:12px;color:var(--text-muted)">Cetak & review laporan MCU final</div></div></div></div>
-        </div>
-      </div>
-    </div>
-    <!-- APP CONTENT (hidden until module selected) -->
-    <div id="appContent" style="display:none">
-    <div style="background:#1a3a6b;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#00B4D8,#FF6B9D);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px">MK</div><span style="color:#fff;font-size:17px;font-weight:800">MCU System</span></div>
-      <div style="display:flex;align-items:center;gap:20px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-user" style="color:rgba(255,255,255,.7);font-size:14px"></i></div><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="appUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><div style="width:1px;height:24px;background:rgba(255,255,255,.2)"></div><button style="color:#fff;background:none;border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px" onclick="backToHome()"><i class="fas fa-arrow-left"></i> Menu Utama</button><div style="width:1px;height:24px;background:rgba(255,255,255,.2)"></div><button style="color:rgba(255,255,255,.5);background:none;border:none;font-size:14px;cursor:pointer" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i></button></div>
-    </div>
-    <div class="pg" style="padding:24px 32px">
-      <!-- DASHBOARD -->
-      <section class="sec act" id="p-dashboard">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div style="display:flex;align-items:center;gap:10px"><i class="fas fa-th-large" style="color:#1a3a6b;font-size:20px"></i><h2 style="font-size:22px;font-weight:800">Dashboard Operasional MCU</h2></div></div>
-        <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px">Ringkasan progres pemeriksaan MCU berdasarkan tanggal dan institusi</p>
-        <!-- Filter -->
-        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;padding:20px;border:1.5px solid var(--border);border-radius:var(--rs)">
-          <div class="fi" style="margin:0;flex:1"><label>TANGGAL MCU</label><input type="date" id="dashTanggal" value="2026-05-06"></div>
-          <div class="fi" style="margin:0;flex:1"><label>INSTITUSI PELAKSANA</label><select id="dashInstitusi"><option>Mitra Keluarga Bekasi</option></select></div>
-          <button class="btn" style="background:#1a3a6b;color:#fff;padding:12px 24px;font-size:13px;height:44px" onclick="rDash()"><i class="fas fa-sync"></i> Muat Ulang</button>
-        </div>
-        <!-- Stats 6 cards -->
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px" id="dashStats"></div>
-        <!-- Info bar -->
-        <div style="display:flex;gap:20px;align-items:center;padding:12px 0;margin-bottom:24px;font-size:12px;color:var(--text-muted);flex-wrap:wrap" id="dashInfoBar"></div>
-        <!-- Kotak Pemeriksaan -->
-        <div style="margin-bottom:24px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><h3 style="font-size:16px;font-weight:800">Kotak Pemeriksaan</h3><span style="background:#1a3a6b;color:#fff;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700" id="dashStasiunCount">0 Stasiun</span></div>
-          <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Progres per stasiun pemeriksaan (maks. 10 kotak)</p>
-          <div style="border:1.5px solid var(--border);border-radius:var(--rs);padding:40px;text-align:center" id="dashStasiun">
-            <i class="fas fa-inbox" style="font-size:32px;color:var(--text-muted);opacity:.4;margin-bottom:12px;display:block"></i>
-            <strong>Tidak Ada Stasiun Aktif</strong>
-            <p style="font-size:12px;color:var(--text-muted);margin-top:4px">Belum ada journey pasien yang dapat dipetakan ke kotak pemeriksaan untuk tanggal dan institusi ini.</p>
-          </div>
-        </div>
-      </section>
-      <!-- MASTER DATA -->
-      <section class="sec" id="p-master">
-        <!-- Flow Visual -->
-        <div class="cd" style="margin-bottom:24px"><div class="cd-h"><h3><i class="fas fa-database" style="color:var(--p1);margin-right:8px"></i> Master Data Peserta</h3><span class="bg bg-p">Step 1</span></div><div class="cd-b">
-          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
-            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-file-excel" style="font-size:28px;color:#217346;margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Upload Excel</div><div style="font-size:10px;color:var(--text-muted)">.xlsx / .csv</div></div>
-            <i class="fas fa-arrow-right" style="color:var(--p1);font-size:20px"></i>
-            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-cogs" style="font-size:28px;color:var(--p1);margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Proses Data</div><div style="font-size:10px;color:var(--text-muted)">Validasi & Parsing</div></div>
-            <i class="fas fa-arrow-right" style="color:var(--p1);font-size:20px"></i>
-            <div style="text-align:center;padding:16px 24px;background:var(--bg);border-radius:var(--rs);min-width:140px"><i class="fas fa-list-alt" style="font-size:28px;color:#7C4DFF;margin-bottom:8px;display:block"></i><div style="font-size:12px;font-weight:600;color:var(--text)">Database</div><div style="font-size:10px;color:var(--text-muted)">Tersimpan Otomatis</div></div>
-          </div>
-          <div class="up" id="dropZone" onclick="document.getElementById('exFile').click()">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Drag & drop file Excel / CSV ke sini<br><small>atau klik untuk pilih file (.xlsx, .xls, .csv)</small></p>
-            <input type="file" id="exFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)">
-          </div>
-          <!-- Preview Area -->
-          <div id="previewArea" style="display:none;margin-top:20px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-              <h4 style="font-size:14px;color:var(--text)"><i class="fas fa-eye" style="color:var(--p1);margin-right:8px"></i>Preview Data Import</h4>
-              <div style="display:flex;gap:8px">
-                <span id="previewCount" class="bg bg-i">0 data</span>
-                <button class="btn btn-s btn-sm" onclick="confirmImport()"><i class="fas fa-check"></i> Import Semua</button>
-                <button class="btn btn-o btn-sm" onclick="cancelImport()"><i class="fas fa-times"></i> Batal</button>
-              </div>
-            </div>
-            <div class="tw" style="max-height:300px;overflow-y:auto"><table><thead><tr><th>Nama</th><th>NIK</th><th>Perusahaan</th><th>Paket</th><th>Status</th></tr></thead><tbody id="previewTb"></tbody></table></div>
-          </div>
-          <!-- Import Result -->
-          <div id="importResult" style="display:none;margin-top:16px;padding:16px;border-radius:var(--rs);background:var(--success-bg);border:1px solid rgba(0,230,118,.2)">
-            <div style="display:flex;align-items:center;gap:12px"><i class="fas fa-check-circle" style="color:var(--success);font-size:20px"></i><div><strong id="importMsg" style="font-size:14px"></strong><p id="importDetail" style="font-size:12px;color:var(--text-muted);margin-top:2px"></p></div></div>
-          </div>
-          <div style="margin-top:20px;text-align:center;display:flex;gap:12px;justify-content:center">
-            <button class="btn btn-o btn-sm" onclick="dlTemplate()"><i class="fas fa-download"></i> Download Template Excel</button>
-            <button class="btn btn-p btn-sm" onclick="showAddM()"><i class="fas fa-user-plus"></i> Tambah Manual</button>
-          </div>
-        </div></div>
-        <div class="cd"><div class="cd-h"><h3>Daftar Peserta MCU</h3><span id="totalPC" style="font-size:13px;color:var(--text-muted)"></span></div><div class="cd-b">
-          <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari nama, NIK, atau perusahaan..." id="srcPeserta" oninput="srcP()"></div>
-          <div class="tw"><table><thead><tr><th>No</th><th>ID</th><th>Nama</th><th>NIK</th><th>Perusahaan</th><th>Paket</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="pesertaTb"></tbody></table></div>
-          <div class="es" id="emptyP" style="display:none"><i class="fas fa-users"></i><h3>Belum ada data peserta</h3><p>Upload file Excel atau tambah peserta secara manual</p></div>
-        </div></div>
-      </section>
-      <!-- RUMAH SAKIT -->
-      <section class="sec" id="p-rs">
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-hospital" style="color:var(--p1);margin-right:8px"></i>Master Rumah Sakit</h3><button class="btn btn-p btn-sm" onclick="showAddRS()"><i class="fas fa-plus"></i> Tambah RS</button></div><div class="cd-b">
-          <div class="tw"><table><thead><tr><th>Nama Rumah Sakit</th><th>Alamat</th><th>Telepon</th><th>Jumlah Paket</th><th>Aksi</th></tr></thead><tbody id="rsTb"></tbody></table></div>
-        </div></div>
-      </section>
-      <!-- PAKET MCU -->
-      <section class="sec" id="p-paket">
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-box-open" style="color:var(--p1);margin-right:8px"></i>Manajemen Paket MCU</h3><button class="btn btn-p btn-sm" onclick="showAddPaket()"><i class="fas fa-plus"></i> Tambah Paket</button></div><div class="cd-b">
-          <div id="paketList"></div>
-        </div></div>
-      </section>
-      <!-- REGISTRASI -->
-      <section class="sec" id="p-registrasi">
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">Registrasi Kedatangan Peserta MCU</h2>
-        <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px">Cari dan proses kedatangan peserta sesuai jadwal yang terdaftar.</p>
-        <!-- Filter Bar -->
-        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;padding:20px;background:#fff;border-radius:var(--rs);border:1px solid var(--border)">
-          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="regTanggal" value="2026-05-05"></div>
-          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="regInstitusi" onchange="filterReg()"><option value="">Semua RS</option></select></div>
-          <div class="fi" style="margin:0;min-width:150px"><label>PATIENT ID</label><input type="text" id="regPatientId" placeholder="Cari SPESIFIK ID..." oninput="filterReg()"></div>
-          <div class="fi" style="margin:0;flex:1;min-width:200px"><label>PENCARIAN UMUM</label><input type="text" id="regSearch" placeholder="Cari Nama, NIK, Perusahaan..." oninput="filterReg()"></div>
-          <button class="btn btn-p btn-sm" style="height:40px;background:#1a3a6b" onclick="rReg()"><i class="fas fa-sync"></i> Muat Ulang</button>
-        </div>
-        <!-- Stats -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
-          <div style="padding:16px 20px;border:2px solid var(--border);border-radius:var(--rs)"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Total Peserta</div><div style="font-size:28px;font-weight:800" id="regStatTotal">0</div></div>
-          <div style="padding:16px 20px;border:2px solid #36B37E;border-radius:var(--rs)"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Sudah Registrasi</div><div style="font-size:28px;font-weight:800;color:#36B37E" id="regStatDone">0</div></div>
-          <div style="padding:16px 20px;border:2px solid #FF8B00;border-radius:var(--rs)"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Belum Registrasi</div><div style="font-size:28px;font-weight:800;color:#FF8B00" id="regStatPending">0</div></div>
-        </div>
-        <p style="font-size:12px;color:var(--p1);text-align:right;margin-bottom:12px">Info: Klik pada baris peserta untuk membuka form registrasi ulang.</p>
-        <!-- Table -->
-        <div class="tw"><table>
-          <thead><tr style="background:#1a3a6b;color:#fff"><th style="color:#fff">Patient ID</th><th style="color:#fff">Nama Peserta</th><th style="color:#fff">Perusahaan</th><th style="color:#fff">Paket MCU</th><th style="color:#fff">Status</th></tr></thead>
-          <tbody id="regTb"></tbody>
-        </table></div>
-      </section>
-      <!-- KEHADIRAN (now Daftar Peserta) -->
-      <section class="sec" id="p-kehadiran">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <div><h2 style="font-size:22px;font-weight:800">Daftar Peserta MCU</h2><p style="color:var(--text-muted);font-size:13px">Kelola data peserta Medical Check Up</p></div>
-          <div style="display:flex;gap:12px"><button class="btn btn-o" style="padding:12px 24px;font-size:14px" onclick="rKeh()"><i class="fas fa-sync"></i> Muat Ulang</button><button class="btn" style="background:#FF6B00;color:#fff;padding:12px 24px;font-size:14px" onclick="document.getElementById('exFile2').click()"><i class="fas fa-file-excel"></i> Upload Excel</button><input type="file" id="exFile2" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)"></div>
-        </div>
-        <!-- Filter -->
-        <div style="display:flex;gap:12px;align-items:flex-end;margin:24px 0;flex-wrap:wrap;padding:20px;border:1.5px solid var(--border);border-radius:var(--rs)">
-          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="kehTanggal"></div>
-          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="kehInstitusi"><option value="">Semua Institusi</option></select></div>
-          <div class="fi" style="margin:0;flex:1;min-width:200px"><label>CARI PESERTA</label><input type="text" id="kehSearch" placeholder="Cari nama, ID, perusahaan..." oninput="filterKeh()"></div>
-        </div>
-        <!-- Tabs -->
-        <div style="display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border)">
-          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;border-bottom:2px solid #1a3a6b;color:#1a3a6b;font-weight:700" onclick="fKeh('semua')">Semua</button>
-          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;color:var(--text-muted)" onclick="fKeh('Belum Hadir')">Belum Registrasi</button>
-          <button class="btn btn-sm" style="border-radius:8px 8px 0 0;color:var(--text-muted)" onclick="fKeh('Hadir')">Registrasi</button>
-          <span style="margin-left:auto;font-size:13px;color:var(--text-muted);align-self:center" id="kehTotal">Total Result: 0</span>
-        </div>
-        <!-- Table -->
-        <div class="tw"><table>
-          <thead><tr style="background:#f8f9fa"><th>TGL MCU</th><th>PATIENT ID</th><th>NAMA PESERTA</th><th>L/P</th><th>BATCH / CABANG</th><th>NO KARYAWAN</th><th>NO TELEPON</th><th>ON CHECK</th><th>STATUS</th><th>AKSI</th></tr></thead>
-          <tbody id="kehTb"></tbody>
-        </table></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding:12px 0;border-top:1px solid var(--border)">
-          <span style="font-size:13px;color:var(--text-muted)" id="kehRowCount">Menampilkan 0 baris</span>
-          <button class="btn btn-o btn-sm" onclick="showAddPeserta()"><i class="fas fa-plus"></i> Tambah Manual</button>
-        </div>
-      </section>
-      <!-- PEMERIKSAAN -->
-      <section class="sec" id="p-pemeriksaan">
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">Pemeriksaan Medis</h2>
-        <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px">Modul Pengecekan Generalis & Fisik Awal Pasien</p>
-        <!-- Filter -->
-        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;padding:20px;border:1.5px dashed var(--border);border-radius:var(--rs)">
-          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="pemTanggal" value="2026-05-05"></div>
-          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="pemInstitusi"><option value="">Semua Institusi</option></select></div>
-          <button class="btn btn-o btn-sm" style="height:40px" onclick="rPem()"><i class="fas fa-sync"></i> Muat Ulang</button>
-          <div class="fi" style="margin:0;flex:1;min-width:200px"><label style="visibility:hidden">x</label><div style="display:flex;gap:8px"><input type="text" id="srcPem" placeholder="Ketik ID / Nama / Perusahaan..." oninput="srcPem2()" style="flex:1"><button class="btn btn-p btn-sm" style="height:40px;background:#6C63FF" onclick="srcPem2()">Cari</button></div></div>
-        </div>
-        <!-- Table -->
-        <div class="tw"><table>
-          <thead><tr><th>No</th><th>Patient ID</th><th>Nama Peserta</th><th>Perusahaan</th><th>Paket MCU</th><th>Registrasi</th><th>Status Generalis</th></tr></thead>
-          <tbody id="pemTb"></tbody>
-        </table></div>
-      </section>
-      <!-- TRACKING -->
-      <section class="sec" id="p-tracking">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <div style="display:flex;align-items:center;gap:10px"><i class="fas fa-map-marker-alt" style="color:#FF5252;font-size:20px"></i><h2 style="font-size:22px;font-weight:800">Journey Pasien</h2></div>
-          <span class="bg bg-p" id="trackCount">Menampilkan 0 antrean</span>
-        </div>
-        <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px">Lacak dan verifikasi perjalanan pemeriksaan antar poli.</p>
-        <!-- Filter -->
-        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;padding:20px;border:1.5px dashed var(--border);border-radius:var(--rs)">
-          <div class="fi" style="margin:0;min-width:140px"><label>TANGGAL MCU</label><input type="date" id="trackTanggal" value="2026-05-05"></div>
-          <div class="fi" style="margin:0;min-width:180px"><label>INSTITUSI</label><select id="trackInstitusi"><option value="">Semua Institusi</option></select></div>
-          <button class="btn btn-o btn-sm" style="height:40px" onclick="rTrack()"><i class="fas fa-sync"></i> Muat Ulang</button>
-          <div class="fi" style="margin:0;flex:1;min-width:200px"><label style="visibility:hidden">x</label><div style="display:flex;gap:8px"><input type="text" id="srcTrack" placeholder="ID / Nama / Perusahaan..." oninput="srcTrack2()" style="flex:1"><button class="btn btn-o btn-sm" style="height:40px" onclick="srcTrack2()">Cari</button><button class="btn btn-p btn-sm" style="height:40px;background:#1a3a6b" onclick="openScanner()"><i class="fas fa-qrcode"></i> Scan QR</button></div></div>
-        </div>
-        <!-- Table -->
-        <div class="tw"><table>
-          <thead><tr><th>No</th><th>Patient ID</th><th>Nama Peserta</th><th>Perusahaan</th><th>Paket MCU</th><th>Status Journey</th></tr></thead>
-          <tbody id="trackTb"></tbody>
-        </table></div>
-        <!-- Detail panel -->
-        <div id="trackRes" style="margin-top:24px"></div>
-      </section>
-      <!-- REVIEW DOKTER (Cek Status) -->
-      <section class="sec" id="p-review">
-        <div style="text-align:center;max-width:650px;margin:40px auto">
-          <div style="width:60px;height:60px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fas fa-tv" style="font-size:24px;color:#1a3a6b"></i></div>
-          <h2 style="font-size:24px;font-weight:900;margin-bottom:8px">Cek Status Pemeriksaan</h2>
-          <p style="color:var(--text-muted);font-size:13px;margin-bottom:32px">Silakan atur sesi mesin ini, lalu pindai gelang pasien Anda untuk memantau perjalanan Medical Check Up secara mandiri.</p>
-          <div style="border:2px solid #1a3a6b;border-radius:var(--rs);padding:28px;border-top:4px solid #1a3a6b">
-            <div style="display:flex;gap:16px;margin-bottom:24px">
-              <div class="fi" style="margin:0;flex:1"><label>PILIH TANGGAL</label><div style="display:flex;align-items:center;gap:8px"><i class="fas fa-calendar" style="color:var(--text-muted)"></i><input type="date" id="revTanggal" value="2026-05-06"></div></div>
-              <div class="fi" style="margin:0;flex:1"><label>PILIH INSTITUSI BATCH</label><div style="display:flex;align-items:center;gap:8px"><i class="fas fa-hospital" style="color:var(--text-muted)"></i><select id="revInstitusi" style="flex:1"><option>-- Wajib Pilih --</option></select></div></div>
-            </div>
-            <button style="width:100%;padding:16px;background:#1a3a6b;color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px" onclick="openScanner()"><i class="fas fa-qrcode"></i> Scan Gelang QRCode</button>
-            <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-bottom:16px">ATAU</div>
-            <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:30px;padding:4px 4px 4px 16px"><i class="fas fa-search" style="color:var(--text-muted);font-size:16px;margin-right:10px"></i><input type="text" id="srcRev" placeholder="Ketik Patient ID secara manual..." style="flex:1;padding:12px 0;border:none;font-size:14px;outline:none;background:transparent" onkeydown="if(event.key==='Enter')cekStatusManual()"><button style="padding:12px 24px;background:#6B7280;color:#fff;border:none;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer" onclick="cekStatusManual()">CARI</button></div>
-          </div>
-          <div id="revResult" style="margin-top:24px"></div>
-        </div>
-      </section>
-      <!-- LAPORAN -->
-      <section class="sec" id="p-laporan">
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-file-medical-alt" style="color:var(--p1);margin-right:8px"></i>Laporan Hasil MCU</h3><span class="bg bg-p">Step 9</span></div><div class="cd-b">
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Generate laporan hasil MCU lengkap dalam format PDF untuk masing-masing peserta</p>
-          <div style="display:flex;gap:12px;margin-bottom:20px">
-            <button class="btn btn-p btn-sm" onclick="generateAll()"><i class="fas fa-file-pdf"></i> Generate Semua PDF</button>
-            <button class="btn btn-o btn-sm" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
-            <button class="btn btn-o btn-sm" onclick="exportSAP()"><i class="fas fa-database"></i> Export SAP (Step 10)</button>
-          </div>
-          <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari peserta..." id="srcLap" oninput="srcLap2()"></div>
-          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Perusahaan</th><th>Paket</th><th>Kesimpulan</th><th>Dokter</th><th>Aksi</th></tr></thead><tbody id="lapTb"></tbody></table></div>
-        </div></div>
-      </section>
-    </div><!-- end pg -->
-    </div><!-- end appContent -->
-  </main>
-</div>
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="loginScreen" style="position:fixed;top:0;left:0;right:0;bottom:0;background:#ffffff;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column">
-  <div style="position:absolute;top:24px;left:32px;display:flex;align-items:center;gap:8px"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="12" r="8" fill="#00B4D8"/><circle cx="14" cy="26" r="7" fill="#FF6B9D"/><circle cx="26" cy="26" r="7" fill="#FFD600"/></svg><div style="font-size:18px;font-weight:800;color:#1a1a2e">Mitra<br>Keluarga</div></div>
-  <div style="background:#fff;border-radius:12px;width:90%;max-width:480px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)">
-    <div style="background:#1a3a6b;padding:16px 24px;display:flex;align-items:center;gap:10px"><i class="fas fa-key" style="color:#FFD600;font-size:16px"></i><span style="color:#FFD600;font-size:17px;font-weight:800;letter-spacing:.5px">LOGIN MCU SYSTEM</span></div>
-    <div style="padding:32px 40px">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px"><label style="width:100px;font-size:13px;font-weight:600;color:#333">USER ID</label><input type="text" id="loginUser" style="flex:1;padding:10px 14px;border:1.5px solid #ccc;border-radius:6px;font-size:13px"></div>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px"><label style="width:100px;font-size:13px;font-weight:600;color:#333">PASSWORD</label><div style="flex:1;position:relative"><input type="password" id="loginPass" style="width:100%;padding:10px 40px 10px 14px;border:1.5px solid #ccc;border-radius:6px;font-size:13px" onkeydown="if(event.key==='Enter')doLogin()"><button type="button" onclick="togglePass()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#666"><i class="fas fa-eye" id="passIcon"></i></button></div></div>
-      <div style="display:flex;gap:12px;justify-content:center"><button id="btnLogin" onclick="doLogin()" style="padding:10px 24px;background:#1a3a6b;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;min-width:140px">LOG IN</button><button onclick="toast('Exit')" style="padding:10px 24px;background:#fff;color:#333;border:1.5px solid #ccc;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">EXIT</button><button onclick="toast('Hubungi admin untuk ganti password')" style="padding:10px 24px;background:#fff;color:#333;border:1.5px solid #ccc;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">CHANGE PASSWORD</button></div>
-      <p style="font-size:11px;color:#999;margin-top:20px;text-align:center">Default: admin / admin123</p>
+  <div style="background:#fff;border-radius:16px;width:90%;max-width:500px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+    <div style="background:#1a3a6b;padding:18px 28px;display:flex;align-items:center;gap:10px"><i class="fas fa-key" style="color:#FFD600;font-size:16px"></i><span style="color:#FFD600;font-size:16px;font-weight:700">LOGIN MCU SYSTEM</span></div>
+    <div style="padding:36px 40px">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px"><label style="width:110px;font-size:14px;font-weight:600;color:#333">USER ID</label><input type="text" id="loginUser" style="flex:1;padding:12px 16px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit"></div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px"><label style="width:110px;font-size:14px;font-weight:600;color:#333">PASSWORD</label><div style="flex:1;position:relative"><input type="password" id="loginPass" style="width:100%;padding:12px 40px 12px 16px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit" onkeydown="if(event.key==='Enter')doLogin()"><button type="button" onclick="togglePass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#999"><i class="fas fa-eye" id="passIcon"></i></button></div></div>
+      <div style="display:flex;gap:12px;justify-content:center"><button id="btnLogin" onclick="doLogin()" style="padding:12px 32px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;min-width:150px;font-family:inherit">LOG IN</button><button onclick="toast('Exit')" style="padding:12px 24px;background:#fff;color:#333;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">EXIT</button><button onclick="toast('Hubungi admin')" style="padding:12px 24px;background:#fff;color:#333;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">CHANGE PASSWORD</button></div>
+      <p style="font-size:12px;color:#999;margin-top:20px;text-align:center">Default: admin / admin123</p>
     </div>
   </div>
 </div>
+
+<!-- APP -->
+<div class="app" style="display:none">
+<main class="mn" style="margin-left:0">
+  <!-- HOME -->
+  <div id="homeScreen" style="background:#fff;min-height:100vh">
+    <div style="background:#1a3a6b;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px">MK</div><span style="color:#fff;font-size:15px;font-weight:700">MCU System</span></div>
+      <div style="display:flex;align-items:center;gap:20px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-user" style="color:rgba(255,255,255,.7);font-size:14px"></i></div><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="homeUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><div style="width:1px;height:24px;background:rgba(255,255,255,.2)"></div><button style="color:#fff;background:none;border:none;font-size:13px;cursor:pointer;font-family:inherit" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
+    </div>
+    <div style="max-width:1100px;margin:32px auto;padding:0 32px">
+      <h2 style="font-size:28px;font-weight:900;margin-bottom:6px">Menu Utama</h2>
+      <p style="color:#718096;margin-bottom:24px;font-size:14px">Pilih modul layanan untuk memulai aktivitas Anda hari ini.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="menu-card" onclick="enterModule('registrasi')"><div class="menu-icon"><i class="fas fa-clipboard-check"></i></div><div><div class="menu-title">Registrasi Ulang</div><div class="menu-sub">Registrasi kedatangan peserta</div></div></div>
+        <div class="menu-card" onclick="enterModule('pemeriksaan')"><div class="menu-icon"><i class="fas fa-stethoscope"></i></div><div><div class="menu-title">Pemeriksaan Medis</div><div class="menu-sub">Detail Pemeriksaan Medis</div></div></div>
+        <div class="menu-card" onclick="enterModule('tracking')"><div class="menu-icon"><i class="fas fa-route"></i></div><div><div class="menu-title">Journey Peserta</div><div class="menu-sub">Proses Paket MCU</div></div></div>
+        <div class="menu-card" onclick="enterModule('kehadiran')"><div class="menu-icon"><i class="fas fa-users"></i></div><div><div class="menu-title">Daftar Peserta</div><div class="menu-sub">Kelola data peserta</div></div></div>
+        <div class="menu-card" onclick="enterModule('dashboard')"><div class="menu-icon"><i class="fas fa-th-large"></i></div><div><div class="menu-title">Dashboard</div><div class="menu-sub">Ringkasan statistik</div></div></div>
+        <div class="menu-card" onclick="enterModule('review')"><div class="menu-icon"><i class="fas fa-check-square"></i></div><div><div class="menu-title">Cek Status Mandiri</div><div class="menu-sub">Cek mandiri status peserta</div></div></div>
+        <div class="menu-card" onclick="enterModule('master')"><div class="menu-icon"><i class="fas fa-database"></i></div><div><div class="menu-title">Master Data</div><div class="menu-sub">Kelola data utama</div></div></div>
+        <div class="menu-card" onclick="enterModule('laporan')"><div class="menu-icon"><i class="fas fa-chart-bar"></i></div><div><div class="menu-title">Laporan Pemeriksaan</div><div class="menu-sub">Cetak & review laporan MCU final</div></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- APP CONTENT -->
+  <div id="appContent" style="display:none">
+    <div style="background:#1a3a6b;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px">MK</div><span style="color:#fff;font-size:15px;font-weight:700">MCU System</span></div>
+      <div style="display:flex;align-items:center;gap:20px"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-user" style="color:rgba(255,255,255,.7);font-size:14px"></i></div><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="appUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><div style="width:1px;height:24px;background:rgba(255,255,255,.2)"></div><button style="color:#fff;background:none;border:none;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px" onclick="backToHome()"><i class="fas fa-arrow-left"></i> Menu Utama</button><div style="width:1px;height:24px;background:rgba(255,255,255,.2)"></div><button style="color:rgba(255,255,255,.5);background:none;border:none;font-size:14px;cursor:pointer" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i></button></div>
+    </div>
+    <div style="padding:24px 32px">
+
+      <!-- SECTIONS - loaded from existing -->
+      <section class="sec act" id="p-dashboard"></section>
+      <section class="sec" id="p-master"><div id="masterContent">Loading...</div></section>
+      <section class="sec" id="p-rs"></section>
+      <section class="sec" id="p-paket"></section>
+      <section class="sec" id="p-registrasi"></section>
+      <section class="sec" id="p-kehadiran"></section>
+      <section class="sec" id="p-pemeriksaan"></section>
+      <section class="sec" id="p-tracking"></section>
+      <section class="sec" id="p-review"></section>
+      <section class="sec" id="p-laporan"></section>
+    </div>
+  </div>
+</main>
+</div>
+
 <!-- MODALS -->
-<div class="mo" id="mAdd"><div class="md" style="max-width:700px"><div class="md-h"><h3>Tambah Peserta Manual</h3><button class="md-c" onclick="closeM('mAdd')">&times;</button></div><div class="md-b">
-  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA DASAR</h4>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-    <div class="fi"><label>Tanggal MCU *</label><input type="date" id="fTglMCU" value="2026-05-05"></div>
-    <div class="fi"><label>Institusi / Cabang *</label><select id="fInstitusi"></select></div>
-    <div class="fi"><label>Status MCU</label><select id="fStatusMCU"><option>Belum Registrasi</option><option>Sudah Registrasi</option></select></div>
-  </div>
-  <div class="fi" style="margin-top:12px"><label>Patient ID *</label><input type="text" id="fPatientId" placeholder="PA-XXXX-XXXX" style="max-width:300px"></div>
-  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA PESERTA</h4>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-    <div class="fi"><label>Nama Peserta *</label><input type="text" id="fNama" placeholder="Nama Lengkap"></div>
-    <div class="fi"><label>Jenis Kelamin</label><select id="fJK"><option value="Laki-laki">Laki-laki (L)</option><option value="Perempuan">Perempuan (P)</option></select></div>
-    <div class="fi"><label>Tanggal Lahir</label><input type="date" id="fTgl"></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px">
-    <div class="fi"><label>No KTP</label><input type="text" id="fNIK" placeholder="3201234567890001" maxlength="16"></div>
-    <div class="fi"><label>Telp 1</label><input type="text" id="fTlp" placeholder="08xxx"></div>
-    <div class="fi"><label>Telp 2</label><input type="text" id="fTlp2" placeholder="021-xxx"></div>
-  </div>
-  <h4 style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)">DATA PERUSAHAAN & MCU</h4>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-    <div class="fi"><label>Perusahaan *</label><input type="text" id="fPer" placeholder="Nama Perusahaan"></div>
-    <div class="fi"><label>Departemen</label><input type="text" id="fDep" placeholder="Engineering, HRD, dll"></div>
-    <div class="fi"><label>Telp Perusahaan</label><input type="text" id="fTlpPer" placeholder="021-xxx"></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px">
-    <div class="fi"><label>No Karyawan</label><input type="text" id="fNoKar" placeholder="-"></div>
-    <div class="fi"><label>Paket MCU *</label><select id="fPak"></select></div>
-    <div class="fi"><label>Employee Responsible</label><input type="text" id="fEmpResp" placeholder="Nama penanggung jawab"></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
-    <div class="fi"><label>Klinik</label><input type="text" id="fKlinik" placeholder="Klinik A"></div>
-    <div class="fi"><label>Unit</label><input type="text" id="fUnit" placeholder="Unit Radiologi"></div>
-  </div>
-  <div style="margin-top:16px;padding:12px 16px;background:#FFFAE6;border-radius:var(--rs);border:1px solid #FFD600;font-size:12px"><strong style="color:#FF6B00">Info:</strong> No Case akan dibuat secara otomatis oleh sistem secara acak (format: <code>XXXX</code>).</div>
-</div><div class="md-f"><button class="btn btn-o" onclick="closeM('mAdd')">Batal</button><button class="btn btn-sm" style="background:#36B37E;color:#fff;padding:10px 24px" onclick="saveP()">Simpan Peserta</button></div></div></div>
-<div class="mo" id="mPem"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mPemTitle">Input Pemeriksaan</h3><button class="md-c" onclick="closeM('mPem')">&times;</button></div><div class="md-b" id="mPemBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPem')">Batal</button><button class="btn btn-s" onclick="savePem()">Simpan Hasil</button></div></div></div>
-<div class="mo" id="mRev"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mRevTitle">Review Dokter</h3><button class="md-c" onclick="closeM('mRev')">&times;</button></div><div class="md-b" id="mRevBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mRev')">Batal</button><button class="btn btn-p" onclick="saveRev()">Simpan Review</button></div></div></div>
-<div class="mo" id="mDet"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mDetTitle">Detail Peserta</h3><button class="md-c" onclick="closeM('mDet')">&times;</button></div><div class="md-b" id="mDetBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mDet')">Tutup</button></div></div></div>
-<div class="mo" id="mRS"><div class="md" style="max-width:500px"><div class="md-h"><h3 id="mRSTitle">Tambah Rumah Sakit</h3><button class="md-c" onclick="closeM('mRS')">&times;</button></div><div class="md-b">
-  <div class="fi"><label>Nama Rumah Sakit *</label><input type="text" id="frsNama" placeholder="RS Mitra Keluarga Grand Wisata"></div>
-  <div class="fi" style="margin-top:16px"><label>Alamat</label><input type="text" id="frsAlamat" placeholder="Kota / Alamat"></div>
-  <div class="fi" style="margin-top:16px"><label>Telepon</label><input type="text" id="frsTelp" placeholder="021-xxx"></div>
-  <input type="hidden" id="frsId">
-</div><div class="md-f"><button class="btn btn-o" onclick="closeM('mRS')">Batal</button><button class="btn btn-p" onclick="saveRS()">Simpan</button></div></div></div>
-<div class="mo" id="mCamera"><div class="md" style="max-width:500px"><div class="md-h"><h3>Ambil Foto Peserta</h3><button class="md-c" onclick="closeCam()">&times;</button></div><div class="md-b" style="text-align:center">
-  <div id="camName" style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--p1)"></div>
-  <video id="camVideo" autoplay playsinline style="width:100%;max-width:360px;border-radius:var(--rs);background:#000;margin-bottom:12px"></video>
-  <canvas id="camCanvas" style="display:none"></canvas>
-  <div id="camPreview" style="display:none;margin-bottom:12px"><img id="camImg" style="width:200px;height:200px;object-fit:cover;border-radius:var(--rs);border:3px solid var(--success)"></div>
-  <div style="display:flex;gap:8px;justify-content:center"><button class="btn btn-p" onclick="capturePhoto()"><i class="fas fa-camera"></i> Ambil Foto</button><button class="btn btn-o" id="btnRetake" style="display:none" onclick="retakePhoto()"><i class="fas fa-redo"></i> Ulang</button></div>
-</div><div class="md-f"><button class="btn btn-o" onclick="closeCam()">Batal</button><button class="btn btn-s" id="btnConfirmPhoto" style="display:none" onclick="confirmPhoto()"><i class="fas fa-check"></i> Konfirmasi & Generate QR</button></div></div></div>
-<div class="mo" id="mRegResult"><div class="md" style="max-width:500px"><div class="md-h"><h3>Registrasi Berhasil</h3><button class="md-c" onclick="closeM('mRegResult')">&times;</button></div><div class="md-b" style="text-align:center" id="regResultBody"></div><div class="md-f"><button class="btn btn-p" onclick="closeM('mRegResult')">Selesai</button></div></div></div>
-<div class="mo" id="mScanner"><div class="md" style="max-width:520px"><div class="md-h"><h3><i class="fas fa-qrcode" style="color:#FF6B00;margin-right:8px"></i>Scan QR Gelang Pasien</h3><button class="md-c" onclick="closeScanner()">&times;</button></div><div class="md-b">
-  <div id="qrReader" style="width:100%;margin-bottom:16px"></div>
-  <div id="qrStatus" style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:16px">Klik tombol di bawah untuk mulai scan</div>
-  <div style="text-align:center;margin-bottom:16px"><button id="btnStartScan" style="padding:12px 28px;background:#FF6B00;color:#fff;border:none;border-radius:24px;font-size:14px;font-weight:700;cursor:pointer" onclick="startQRScan()"><i class="fas fa-camera"></i> Mulai Scan</button></div>
-  <div style="border-top:1px solid var(--border);padding-top:16px">
-    <label style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px">FALLBACK INPUT MANUAL</label>
-    <div style="display:flex;gap:8px"><input type="text" id="scanManualInput" placeholder="Ketik Patient ID..." style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px"><button style="padding:10px 20px;background:#FF6B00;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer" onclick="resolveManualScan()">Resolusi</button></div>
-  </div>
-</div></div></div>
-<div class="mo" id="mPaket"><div class="md"><div class="md-h"><h3 id="mPaketTitle">Tambah Paket MCU</h3><button class="md-c" onclick="closeM('mPaket')">&times;</button></div><div class="md-b">
-  <div class="fg">
-    <div class="fi"><label>Nama Paket *</label><input type="text" id="fpNama" placeholder="Contoh: Paket Executive Plus"></div>
-    <div class="fi"><label>Harga (Rp)</label><input type="number" id="fpHarga" placeholder="1500000"></div>
-  </div>
-  <div class="fi" style="margin-top:16px"><label>Rumah Sakit *</label><select id="fpRS"></select></div>
-  <div class="fi" style="margin-top:16px"><label>Keterangan</label><input type="text" id="fpKet" placeholder="Deskripsi singkat paket"></div>
-  <div class="fi" style="margin-top:16px"><label>Item Pemeriksaan *</label>
-    <div id="fpItems" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
-    <div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="fpNewItem" placeholder="Tambah item baru..." style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px"><button class="btn btn-o btn-sm" onclick="addPaketItem()"><i class="fas fa-plus"></i></button></div>
-  </div>
-  <input type="hidden" id="fpId">
-</div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPaket')">Batal</button><button class="btn btn-p" onclick="savePaket()">Simpan Paket</button></div></div></div>
-<div id="toast"><div id="toastInner"></div></div>
+<div class="mo" id="mAdd"><div class="md" style="max-width:700px"><div class="md-h"><h3>Tambah Peserta Manual</h3><button class="md-c" onclick="closeM('mAdd')">&times;</button></div><div class="md-b"><div id="addPesertaForm"></div></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mAdd')">Batal</button><button style="padding:10px 24px;background:#36B37E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit" onclick="saveP()">Simpan Peserta</button></div></div></div>
+<div class="mo" id="mPem"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mPemTitle">Input Pemeriksaan</h3><button class="md-c" onclick="closeM('mPem')">&times;</button></div><div class="md-b" id="mPemBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mPem')">Batal</button><button style="padding:10px 24px;background:#36B37E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit" onclick="savePem()">Simpan Hasil</button></div></div></div>
+<div class="mo" id="mRev"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mRevTitle">Review Dokter</h3><button class="md-c" onclick="closeM('mRev')">&times;</button></div><div class="md-b" id="mRevBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mRev')">Batal</button><button style="padding:10px 24px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit" onclick="saveRev()">Simpan Review</button></div></div></div>
+<div class="mo" id="mDet"><div class="md" style="max-width:800px"><div class="md-h"><h3 id="mDetTitle">Detail</h3><button class="md-c" onclick="closeM('mDet')">&times;</button></div><div class="md-b" id="mDetBody"></div><div class="md-f"><button class="btn btn-o" onclick="closeM('mDet')">Tutup</button></div></div></div>
+<div class="mo" id="mScanner"><div class="md" style="max-width:520px"><div class="md-h"><h3><i class="fas fa-qrcode" style="color:#FF6B00;margin-right:8px"></i>Scan QR Gelang Pasien</h3><button class="md-c" onclick="closeScanner()">&times;</button></div><div class="md-b"><div id="qrReader" style="width:100%;margin-bottom:16px"></div><div id="qrStatus" style="text-align:center;font-size:13px;color:#718096;margin-bottom:16px">Klik tombol untuk mulai scan</div><div style="text-align:center;margin-bottom:16px"><button id="btnStartScan" style="padding:12px 28px;background:#FF6B00;color:#fff;border:none;border-radius:24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="startQRScan()"><i class="fas fa-camera"></i> Mulai Scan</button></div><div style="border-top:1px solid #E8ECF0;padding-top:16px"><label style="font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;display:block;margin-bottom:8px">FALLBACK INPUT MANUAL</label><div style="display:flex;gap:8px"><input type="text" id="scanManualInput" placeholder="Ketik Patient ID..." style="flex:1;padding:10px 14px;border:1.5px solid #E8ECF0;border-radius:8px;font-size:13px;font-family:inherit"><button style="padding:10px 20px;background:#FF6B00;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="resolveManualScan()">Resolusi</button></div></div></div></div></div>
+<div class="mo" id="mCamera"><div class="md" style="max-width:500px"><div class="md-h"><h3>Ambil Foto</h3><button class="md-c" onclick="closeCam()">&times;</button></div><div class="md-b" style="text-align:center"><div id="camName" style="font-weight:600;margin-bottom:12px"></div><video id="camVideo" autoplay playsinline style="width:100%;max-width:360px;border-radius:12px;background:#000;margin-bottom:12px"></video><canvas id="camCanvas" style="display:none"></canvas><div id="camPreview" style="display:none;margin-bottom:12px"><img id="camImg" style="width:200px;height:200px;object-fit:cover;border-radius:12px;border:3px solid #36B37E"></div><div style="display:flex;gap:8px;justify-content:center"><button style="padding:10px 20px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit" onclick="capturePhoto()"><i class="fas fa-camera"></i> Ambil</button><button id="btnRetake" style="display:none;padding:10px 20px;background:#fff;color:#333;border:1.5px solid #ddd;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit" onclick="retakePhoto()"><i class="fas fa-redo"></i> Ulang</button></div></div><div class="md-f"><button class="btn btn-o" onclick="closeCam()">Batal</button><button id="btnConfirmPhoto" style="display:none;padding:10px 24px;background:#36B37E;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit" onclick="confirmPhoto()"><i class="fas fa-check"></i> Konfirmasi</button></div></div></div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;z-index:300;display:none"><div id="toastInner" style="background:#1a1a2e;color:#fff;padding:14px 24px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:420px;font-family:inherit"></div></div>
+
 <script src="db.js"></script>
 <script src="pem-forms.js"></script>
 <script src="app.js"></script>
