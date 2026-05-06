@@ -239,13 +239,23 @@ if(typeof QRCode==='undefined'){
         <!-- Detail panel -->
         <div id="trackRes" style="margin-top:24px"></div>
       </section>
-      <!-- REVIEW DOKTER -->
+      <!-- REVIEW DOKTER (Cek Status) -->
       <section class="sec" id="p-review">
-        <div class="cd"><div class="cd-h"><h3><i class="fas fa-user-md" style="color:var(--p1);margin-right:8px"></i>Review Hasil oleh Dokter</h3><span class="bg bg-p">Step 8</span></div><div class="cd-b">
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Dokter mengecek kembali semua hasil pemeriksaan dan memberikan kesimpulan akhir</p>
-          <div class="srch"><i class="fas fa-search"></i><input type="text" placeholder="Cari peserta untuk review..." id="srcRev" oninput="srcRev2()"></div>
-          <div class="tw"><table><thead><tr><th>ID</th><th>Nama</th><th>Paket</th><th>Progress</th><th>Kesimpulan</th><th>Aksi</th></tr></thead><tbody id="revTb"></tbody></table></div>
-        </div></div>
+        <div style="text-align:center;max-width:650px;margin:40px auto">
+          <div style="width:60px;height:60px;background:rgba(26,58,107,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fas fa-tv" style="font-size:24px;color:#1a3a6b"></i></div>
+          <h2 style="font-size:24px;font-weight:900;margin-bottom:8px">Cek Status Pemeriksaan</h2>
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:32px">Silakan atur sesi mesin ini, lalu pindai gelang pasien Anda untuk memantau perjalanan Medical Check Up secara mandiri.</p>
+          <div style="border:2px solid #1a3a6b;border-radius:var(--rs);padding:28px;border-top:4px solid #1a3a6b">
+            <div style="display:flex;gap:16px;margin-bottom:24px">
+              <div class="fi" style="margin:0;flex:1"><label>PILIH TANGGAL</label><div style="display:flex;align-items:center;gap:8px"><i class="fas fa-calendar" style="color:var(--text-muted)"></i><input type="date" id="revTanggal" value="2026-05-06"></div></div>
+              <div class="fi" style="margin:0;flex:1"><label>PILIH INSTITUSI BATCH</label><div style="display:flex;align-items:center;gap:8px"><i class="fas fa-hospital" style="color:var(--text-muted)"></i><select id="revInstitusi" style="flex:1"><option>-- Wajib Pilih --</option></select></div></div>
+            </div>
+            <button style="width:100%;padding:16px;background:#1a3a6b;color:#fff;border:none;border-radius:var(--rs);font-size:15px;font-weight:700;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px" onclick="openScanner()"><i class="fas fa-qrcode"></i> Scan Gelang QRCode</button>
+            <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-bottom:16px">ATAU</div>
+            <div style="display:flex;gap:8px"><div style="flex:1;position:relative"><i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i><input type="text" id="srcRev" placeholder="Ketik Patient ID secara manual..." style="width:100%;padding:10px 14px 10px 36px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px"></div><button style="padding:10px 20px;background:#1a3a6b;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer" onclick="cekStatusManual()">CARI</button></div>
+          </div>
+          <div id="revResult" style="margin-top:24px"></div>
+        </div>
       </section>
       <!-- LAPORAN -->
       <section class="sec" id="p-laporan">
