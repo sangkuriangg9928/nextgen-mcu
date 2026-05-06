@@ -61,14 +61,11 @@ if(typeof QRCode==='undefined'){
     </div>
     <!-- APP CONTENT (hidden until module selected) -->
     <div id="appContent" style="display:none">
-    <div class="tb">
-      <div style="display:flex;align-items:center;gap:12px"><button class="btn btn-o btn-sm" onclick="backToHome()"><i class="fas fa-arrow-left"></i></button><h2 id="pageTitle">Dashboard Monitoring</h2></div>
-      <div class="tb-r">
-        <span class="tb-time" id="liveTime"></span>
-        <button class="btn btn-o btn-sm" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh</button>
-      </div>
+    <div style="background:#1a3a6b;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#00B4D8,#FF6B9D);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px">MK</div><span style="color:#fff;font-size:15px;font-weight:700">MCU System</span></div>
+      <div style="display:flex;align-items:center;gap:16px"><div style="text-align:right"><div style="color:#fff;font-size:13px;font-weight:600" id="appUser">Admin</div><div style="color:rgba(255,255,255,.5);font-size:11px">ADMIN</div></div><button style="color:#fff;background:none;border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px" onclick="backToHome()"><i class="fas fa-arrow-left"></i> Menu Utama</button><button style="color:rgba(255,255,255,.5);background:none;border:none;font-size:14px;cursor:pointer" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i></button></div>
     </div>
-    <div class="pg">
+    <div class="pg" style="padding:24px 32px">
       <!-- DASHBOARD -->
       <section class="sec act" id="p-dashboard">
         <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:var(--r);padding:24px 28px;margin-bottom:24px;color:#fff">

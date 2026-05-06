@@ -170,7 +170,7 @@ function scanFromFile(e){const f=e.target.files[0];if(!f)return;toast('File scan
 function resolveManualScan(){const val=gv('scanManualInput').trim();if(!val)return toast('Masukkan ID peserta');const p=D.find(x=>x.id===val||x.id.includes(val));if(p){closeScanner();showTrackDetail(p.id);toast('Peserta ditemukan: '+p.nama);}else{toast('Peserta tidak ditemukan dengan ID: '+val);}}
 
 // INIT
-function checkLogin(){const user=localStorage.getItem('mcu_user');if(!user){document.getElementById('loginScreen').style.display='flex';document.querySelector('.app').style.display='none';}else{document.getElementById('loginScreen').style.display='none';document.querySelector('.app').style.display='flex';const u=JSON.parse(user);document.getElementById('homeUser').textContent=u.nama||'Admin';}}
+function checkLogin(){const user=localStorage.getItem('mcu_user');if(!user){document.getElementById('loginScreen').style.display='flex';document.querySelector('.app').style.display='none';}else{document.getElementById('loginScreen').style.display='none';document.querySelector('.app').style.display='flex';const u=JSON.parse(user);document.getElementById('homeUser').textContent=u.nama||'Admin';const au=document.getElementById('appUser');if(au)au.textContent=u.nama||'Admin';}}
 function doLogin(){const user=gv('loginUser').trim(),pass=gv('loginPass');if(!user||!pass)return toast('Username dan password wajib diisi');
   // Show processing
   const btn=document.getElementById('btnLogin');btn.textContent='MEMPROSES...';btn.style.background='#6B7280';btn.disabled=true;
