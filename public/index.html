@@ -166,7 +166,7 @@ if(typeof QRCode==='undefined'){
       <section class="sec" id="p-kehadiran">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
           <div><h2 style="font-size:22px;font-weight:800">Daftar Peserta MCU</h2><p style="color:var(--text-muted);font-size:13px">Kelola data peserta Medical Check Up</p></div>
-          <div style="display:flex;gap:12px"><button class="btn btn-o btn-sm" onclick="rKeh()"><i class="fas fa-sync"></i> Muat Ulang</button><button class="btn btn-sm" style="background:#FF6B00;color:#fff" onclick="document.getElementById('exFile2').click()"><i class="fas fa-file-excel"></i> Upload Excel</button><input type="file" id="exFile2" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)"></div>
+          <div style="display:flex;gap:12px"><button class="btn btn-o" style="padding:12px 24px;font-size:14px" onclick="rKeh()"><i class="fas fa-sync"></i> Muat Ulang</button><button class="btn" style="background:#FF6B00;color:#fff;padding:12px 24px;font-size:14px" onclick="document.getElementById('exFile2').click()"><i class="fas fa-file-excel"></i> Upload Excel</button><input type="file" id="exFile2" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileUpload(event)"></div>
         </div>
         <!-- Filter -->
         <div style="display:flex;gap:12px;align-items:flex-end;margin:24px 0;flex-wrap:wrap;padding:20px;border:1.5px solid var(--border);border-radius:var(--rs)">
