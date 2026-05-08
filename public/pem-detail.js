@@ -59,12 +59,12 @@ function renderPemDetailPage(){
     '<div><h2 style="font-size:20px;font-weight:800;margin:0;color:#1a3a6b">Pemeriksaan Medis</h2><p style="font-size:12px;color:#64748b;margin:0">Input Klinis Anamnesa, Fisik, dan Lampiran Hasil</p></div>'+
     '<div style="margin-left:auto;display:flex;gap:10px;align-items:center">'+
       '<span style="padding:7px 16px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(26,58,107,.08);color:#1a3a6b;letter-spacing:.3px">STATUS: GENERALIS TERISI</span>'+
-      '<button onclick="openPesertaDoc(\''+p.id+'\')" style="padding:9px 18px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px"><i class="fas fa-file-alt"></i> Laporan Final</button>'+
+      '<button onclick="openLaporanFinal(\''+p.id+'\')" style="padding:9px 18px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px"><i class="fas fa-file-alt"></i> Laporan Final</button>'+
     '</div>'+
   '</div>'+
   '<div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:20px;background:#fff">'+
     '<h3 style="font-size:14px;font-weight:700;margin-bottom:16px;color:#1a3a6b"><i class="fas fa-id-card" style="margin-right:8px;color:#1a3a6b"></i>Case Header Pasien</h3>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:start">'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:center">'+
       '<div style="display:grid;grid-template-columns:130px 1fr;gap:8px 12px;font-size:12px;align-items:center">'+
         '<label style="font-weight:600;color:#64748b">PatientID</label><input value="'+p.id+'" readonly style="padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:12px;font-family:inherit;color:#1a3a6b;font-weight:600">'+
         '<label style="font-weight:600;color:#64748b">No Rekam Medis</label><input value="-" readonly style="padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:12px;font-family:inherit">'+
@@ -81,7 +81,7 @@ function renderPemDetailPage(){
         '<label style="font-weight:600;color:#64748b">Unit</label><input value="MCU" readonly style="padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:12px;font-family:inherit">'+
         '<label style="font-weight:600;color:#64748b">Nama Petugas</label><input value="'+(p.dokterReview||'dr. Rasya Alvansyah')+'" readonly style="padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:12px;font-family:inherit">'+
       '</div>'+
-      '<div style="width:100px;height:120px;flex-shrink:0">'+fotoHTML+'</div>'+
+      '<div style="width:120px;height:150px;flex-shrink:0;display:flex;align-items:center;justify-content:center">'+fotoHTML+'</div>'+
     '</div>'+
   '</div>'+
   '<div style="display:flex;gap:0;border-bottom:2px solid #e2e8f0;margin-bottom:20px">'+
@@ -413,4 +413,71 @@ function resetPemForm(){
   renderPemForm();
   renderPemNav();
   toast('Form '+pemActiveNav+' direset');
+}
+
+// Laporan Final - Detail view
+function openLaporanFinal(id){
+  var p=getAllPeserta().find(function(x){return x.id===id;});
+  if(!p)return toast('Peserta tidak ditemukan');
+  var sec=document.getElementById('p-pemeriksaan');
+  if(!sec._origHTML)sec._origHTML=sec.innerHTML;
+  var now=new Date();
+  var usia=p.tanggalLahir?(function(){var bd=new Date(p.tanggalLahir);var y=now.getFullYear()-bd.getFullYear();var m=now.getMonth()-bd.getMonth();if(m<0){y--;m+=12;}return y+' Tahun '+m+' Bulan';})():'-';
+  var tglMCU=p.tanggalDaftar?p.tanggalDaftar.split('T')[0]:now.toISOString().split('T')[0];
+  var hasIdentitas=true;
+  var hasAnamnesa=p.pemDetail&&(p.pemDetail.A1||p.pemDetail.A2||p.pemDetail.A3);
+  var hasGeneralis=p.pemDetail&&p.pemDetail.B1;
+  var hasFisik=p.pemDetail&&(p.pemDetail.B2||p.pemDetail.B3||p.pemDetail.B4||p.pemDetail.B5);
+  var hasHasil=p.hasilLampiran&&Object.keys(p.hasilLampiran).length>0;
+  var kelengkapan=[
+    {label:'Identitas Pasien',icon:'fa-user',done:hasIdentitas},
+    {label:'Anamnesa',icon:'fa-file-medical',done:hasAnamnesa},
+    {label:'Pemeriksaan Generalis (B1)',icon:'fa-heartbeat',done:hasGeneralis},
+    {label:'Pemeriksaan Fisik (B2-B15)',icon:'fa-stethoscope',done:hasFisik},
+    {label:'Hasil & Lampiran',icon:'fa-file-alt',done:hasHasil}
+  ];
+  var kategori=[
+    {label:'Status Gizi',icon:'fa-weight'},
+    {label:'Tekanan Darah',icon:'fa-tint'},
+    {label:'Pemeriksaan Fisik',icon:'fa-user-md'},
+    {label:'Laboratorium',icon:'fa-flask'},
+    {label:'Radiologi / Thorax',icon:'fa-x-ray'},
+    {label:'Treadmill / Jantung / EKG',icon:'fa-heartbeat'},
+    {label:'Mata / Visus',icon:'fa-eye'},
+    {label:'Audiometri / THT',icon:'fa-deaf'},
+    {label:'Gigi & Mulut',icon:'fa-tooth'}
+  ];
+  var siap=hasIdentitas&&hasAnamnesa&&hasGeneralis;
+  sec.innerHTML='<div style="max-width:800px;margin:0 auto">'+
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">'+
+      '<button onclick="openPemDetail(\''+p.id+'\')" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fas fa-arrow-left" style="font-size:13px;color:#64748b"></i></button>'+
+      '<div><h2 style="font-size:20px;font-weight:800;margin:0;color:#1a3a6b">Detail Laporan MCU</h2><p style="font-size:12px;color:#64748b;margin:0">Review kelengkapan data sebelum cetak laporan final</p></div>'+
+      '<div style="margin-left:auto"><span style="padding:7px 16px;border-radius:8px;font-size:11px;font-weight:700;'+(siap?'background:#ecfdf5;color:#059669;border:1.5px solid #a7f3d0':'background:#fef3c7;color:#d97706;border:1.5px solid #fde68a')+'">'+(siap?'SIAP DICETAK':'BELUM LENGKAP')+'</span></div>'+
+    '</div>'+
+    '<div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:20px;background:#fff">'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">NAMA PESERTA</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+p.nama+'</div></div>'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">PATIENT ID</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+p.id+'</div></div>'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">JENIS KELAMIN</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+(p.jenisKelamin||'Laki-laki')+'</div></div>'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">USIA</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+usia+'</div></div>'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">PERUSAHAAN</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+(p.perusahaan||'-')+'</div></div>'+
+        '<div><div style="font-size:10px;color:#64748b;text-transform:uppercase">TANGGAL MCU</div><div style="font-size:14px;font-weight:700;color:#1a3a6b">'+tglMCU+'</div></div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:20px;background:#fff">'+
+      '<h4 style="font-size:12px;font-weight:800;text-transform:uppercase;color:#1a3a6b;margin-bottom:16px;letter-spacing:.5px">KELENGKAPAN DATA LAPORAN</h4>'+
+      kelengkapan.map(function(k){return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #f1f5f9"><i class="fas '+k.icon+'" style="color:#94a3b8;font-size:14px;width:20px;text-align:center"></i><span style="flex:1;font-size:13px;font-weight:500;color:#334155">'+k.label+'</span><span style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;'+(k.done?'color:#059669':'color:#94a3b8')+'"><i class="fas fa-check-circle"></i> '+(k.done?'Terisi':'Belum')+'</span></div>';}).join('')+
+    '</div>'+
+    '<div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:24px;background:#fff">'+
+      '<h4 style="font-size:12px;font-weight:800;text-transform:uppercase;color:#1a3a6b;margin-bottom:16px;letter-spacing:.5px">RINGKASAN HASIL PER KATEGORI</h4>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+      kategori.map(function(k){var hasCat=p.hasilLampiran&&p.hasilLampiran[k.label.split(' ')[0].toUpperCase()];return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #f1f5f9;border-radius:8px"><i class="fas '+k.icon+'" style="color:#94a3b8;font-size:12px"></i><span style="flex:1;font-size:12px;color:#334155">'+k.label+'</span><i class="fas fa-check-circle" style="color:'+(hasCat?'#059669':'#cbd5e1')+';font-size:13px"></i></div>';}).join('')+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:12px;margin-bottom:16px">'+
+      '<button onclick="openPesertaDoc(\''+p.id+'\')" style="flex:1;padding:14px;background:#059669;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-eye"></i> Preview Laporan Final</button>'+
+      '<button onclick="openPesertaDoc(\''+p.id+'\')" style="flex:1;padding:14px;background:#fff;color:#1a3a6b;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-print"></i> Print / Simpan PDF</button>'+
+    '</div>'+
+    '<div style="text-align:center"><a href="javascript:void(0)" onclick="openPemDetail(\''+p.id+'\')" style="font-size:12px;color:#1a3a6b;text-decoration:none">&larr; Kembali ke Pemeriksaan Medis (Input/Edit Data)</a></div>'+
+  '</div>';
 }
