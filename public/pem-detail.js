@@ -245,7 +245,7 @@ function savePemSection(){
   // Save to localStorage
   const all=getAllPeserta();
   const idx=all.findIndex(x=>x.id===p.id);
-  if(idx>=0){all[idx]=p;localStorage.setItem('mcu_peserta',JSON.stringify(all));}
+  if(idx>=0){all[idx]=p;localStorage.setItem('mcu_db',JSON.stringify({...JSON.parse(localStorage.getItem('mcu_db')||'{}'),peserta:all}));}
   toast('Data '+pemActiveNav+' tersimpan');
 }
 
